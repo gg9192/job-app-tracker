@@ -13,3 +13,63 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id    Int    @id @default(autoincrement())
+  firstname  String
+  lastname  String
+  email String @unique
+  experiences Experience[]
+  savedresumes Resume[]
+  password String
+}
+
+model Experience {
+  id    Int    @id @default(autoincrement())
+  title  String
+  company  String
+  description  String
+  owninguser    User   @relation(fields: [owninguserID], references: [id])
+  owninguserID    Int
+  @@index([owninguserID])
+}
+
+model Resume {
+  id    Int    @id @default(autoincrement())
+  name String
+  s3link String
+  owninguser    User   @relation(fields: [owninguserID], references: [id])
+  owninguserID    Int
+  @@index([owninguserID])
+}
+
+model JobTag {
+  id    Int    @id @default(autoincrement())
+  name String @unique
+  applications Application[]
+}
+
+enum Status {
+  APPLIED
+  INTERVIEWING
+  ACCEPTED
+  REJECTED
+}
+
+model Application {
+  id    Int    @id @default(autoincrement())
+  jobdescription String
+  applicationdate DateTime @default(now())
+  status Status
+  archivedon DateTime?
+  city String
+  state String
+  hourlyrate Decimal @db.Decimal(10, 2)
+  yearlysalary Decimal @db.Decimal(10, 2)
+  jobtags JobTag[]  
+  resume    Resume   @relation(fields: [resumeID], references: [id])
+  resumeID    Int?
+  owninguser    User   @relation(fields: [owninguserID], references: [id])
+  owninguserID    Int
+  @@index([owninguserID])
+}
