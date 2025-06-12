@@ -6,26 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-
-const schema = z.object({
-  firstname: z.string().min(1, { message: "First name is required" }),
-  lastname: z.string().min(1, { message: "Last name is required" }),
-  email: z.string().email(),
-  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
-});
-
-type FormData = z.infer<typeof schema>;
+import { userSchema, UserSchema } from "@/lib/validators/user";
 
 export default function SignUpPage() {
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-  });
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm<UserSchema>({
+  resolver: zodResolver(userSchema),
+});
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: UserSchema) => {
     console.log(data);
   };
 

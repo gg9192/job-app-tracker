@@ -2,14 +2,14 @@
 CREATE TYPE "Status" AS ENUM ('APPLIED', 'INTERVIEWING', 'ACCEPTED', 'REJECTED');
 
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "UserModel" (
     "id" SERIAL NOT NULL,
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "UserModel_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -67,7 +67,7 @@ CREATE TABLE "_ApplicationToJobTag" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "UserModel_email_key" ON "UserModel"("email");
 
 -- CreateIndex
 CREATE INDEX "Experience_owninguserID_idx" ON "Experience"("owninguserID");
@@ -85,16 +85,16 @@ CREATE INDEX "Application_owninguserID_idx" ON "Application"("owninguserID");
 CREATE INDEX "_ApplicationToJobTag_B_index" ON "_ApplicationToJobTag"("B");
 
 -- AddForeignKey
-ALTER TABLE "Experience" ADD CONSTRAINT "Experience_owninguserID_fkey" FOREIGN KEY ("owninguserID") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Experience" ADD CONSTRAINT "Experience_owninguserID_fkey" FOREIGN KEY ("owninguserID") REFERENCES "UserModel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Resume" ADD CONSTRAINT "Resume_owninguserID_fkey" FOREIGN KEY ("owninguserID") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Resume" ADD CONSTRAINT "Resume_owninguserID_fkey" FOREIGN KEY ("owninguserID") REFERENCES "UserModel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Application" ADD CONSTRAINT "Application_resumeID_fkey" FOREIGN KEY ("resumeID") REFERENCES "Resume"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Application" ADD CONSTRAINT "Application_owninguserID_fkey" FOREIGN KEY ("owninguserID") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Application" ADD CONSTRAINT "Application_owninguserID_fkey" FOREIGN KEY ("owninguserID") REFERENCES "UserModel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ApplicationToJobTag" ADD CONSTRAINT "_ApplicationToJobTag_A_fkey" FOREIGN KEY ("A") REFERENCES "Application"("id") ON DELETE CASCADE ON UPDATE CASCADE;

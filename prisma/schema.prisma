@@ -14,7 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model UserModel {
   id           Int           @id @default(autoincrement())
   firstname    String
   lastname     String
@@ -30,7 +30,7 @@ model Experience {
   title        String
   company      String
   description  String
-  owninguser   User   @relation(fields: [owninguserID], references: [id])
+  owninguser   UserModel   @relation(fields: [owninguserID], references: [id])
   owninguserID Int
 
   @@index([owninguserID])
@@ -40,7 +40,7 @@ model Resume {
   id           Int           @id @default(autoincrement())
   name         String
   s3link       String
-  owninguser   User          @relation(fields: [owninguserID], references: [id])
+  owninguser   UserModel          @relation(fields: [owninguserID], references: [id])
   owninguserID Int
   Application  Application[]
 
@@ -73,7 +73,7 @@ model Application {
   jobtags         JobTag[]
   resume          Resume?   @relation(fields: [resumeID], references: [id])
   resumeID        Int?
-  owninguser      User      @relation(fields: [owninguserID], references: [id])
+  owninguser      UserModel      @relation(fields: [owninguserID], references: [id])
   owninguserID    Int
 
   @@index([owninguserID])
