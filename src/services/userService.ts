@@ -33,6 +33,11 @@ export async function validateLoginAndReturnSession(email: string, password: str
 
   if (user === null) { return null }
 
+  const isMatch = await bcrypt.compare(password, user.password);
+  console.log(isMatch)
+  if (!isMatch) { return null }
+
+
   const sessionToken = nanoid()
   await prisma.userModel.update({
     where: {

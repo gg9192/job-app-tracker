@@ -1,15 +1,14 @@
 import { validateLoginAndReturnSession } from "@/services/userService";
 
 interface RequestData {
-  username: string,
+  email: string,
   password: string
 }
 
 export async function POST(request: Request) {
   try {
     const body: RequestData = await request.json();
-    const token = validateLoginAndReturnSession(body.username, body.password)
-    
+    const token = await validateLoginAndReturnSession(body.email, body.password)
     if (token === null) {
       return new Response('Invalid credentials', { status: 401 });
     }
