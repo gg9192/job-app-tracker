@@ -7,6 +7,7 @@ CREATE TABLE "UserModel" (
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "session" TEXT,
     "password" TEXT NOT NULL,
 
     CONSTRAINT "UserModel_pkey" PRIMARY KEY ("id")
@@ -68,6 +69,9 @@ CREATE TABLE "_ApplicationToJobTag" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserModel_email_key" ON "UserModel"("email");
+
+-- CreateIndex
+CREATE INDEX "UserModel_session_idx" ON "UserModel"("session");
 
 -- CreateIndex
 CREATE INDEX "Experience_owninguserID_idx" ON "Experience"("owninguserID");

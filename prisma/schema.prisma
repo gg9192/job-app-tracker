@@ -19,10 +19,12 @@ model UserModel {
   firstname    String
   lastname     String
   email        String        @unique
+  session      String?       
   experiences  Experience[]
   savedresumes Resume[]
   password     String
   Application  Application[]
+  @@index([session])
 }
 
 model Experience {
