@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { PasswordInput } from "@/components/passwordinput";
 
 const schema = z.object({
   email: z.string().email(),
@@ -47,20 +48,13 @@ export default function LoginPage() {
               <p className="text-sm text-red-500">{errors.email.message}</p>
             )}
           </div>
-          <div>
-            <Label htmlFor="password" className="mb-1 block text-sm font-medium">
-              Password
-            </Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              {...register("password")}
-            />
-            {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
-            )}
-          </div>
+          <PasswordInput
+            id="password"
+            label="Password"
+            placeholder="••••••••"
+            {...register("password")}
+            error={errors.password?.message}
+          />
           <Button type="submit" className="w-full">
             Sign In
           </Button>
