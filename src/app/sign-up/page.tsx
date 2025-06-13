@@ -6,7 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { userSchema, UserSchema } from "@/lib/validators/user";
+import { userSchema, UserSchema } from "@/lib/validators/user"; // Assuming userSchema is still used for the base UserSchema type
+import { z } from "zod";
+
+export const clientUserSchema = userSchema.extend({
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  path: ["confirmPassword"],
+  message: "Passwords do not match",
+});
+
+export type ClientUserSchema = z.infer<typeof clientUserSchema>;
+
 
 function PasswordInput(props: React.ComponentProps<typeof Input> & { label: string; error?: string }) {
   const [show, setShow] = useState(false);
@@ -36,12 +47,13 @@ export default function SignUpPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserSchema>({
-    resolver: zodResolver(userSchema),
+  } = useForm<ClientUserSchema>({ // Changed to ClientUserSchema
+    resolver: zodResolver(clientUserSchema), // Changed to clientUserSchema
   });
 
-  const onSubmit = (data: UserSchema) => {
+  const onSubmit = (data: ClientUserSchema) => { // Changed to ClientUserSchema
     console.log(data);
+    // Here you would typically send the data to your backend
   };
 
   return (
@@ -84,6 +96,13 @@ export default function SignUpPage() {
             placeholder="••••••••"
             {...register("password")}
             error={errors.password?.message}
+          />
+          <PasswordInput
+            id="confirmPassword"
+            label="Confirm Password"
+            placeholder="••••••••"
+            {...register("confirmPassword")} // Added confirmPassword
+            error={errors.confirmPassword?.message} // Added error handling for confirmPassword
           />
           <Button type="submit" className="w-full">
             Sign Up
