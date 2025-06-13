@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { PasswordInput } from "@/components/passwordinput";
+import { toast } from "sonner"
+import { useRouter } from 'next/navigation'
 
 const schema = z.object({
   email: z.string().email(),
@@ -24,8 +26,9 @@ export default function LoginPage() {
     resolver: zodResolver(schema),
   });
 
+  const router = useRouter()
+
   const onSubmit = async (data: FormData) => {
-    console.log(data)
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       method: "POST",
       headers: {
@@ -33,7 +36,19 @@ export default function LoginPage() {
       },
       body: JSON.stringify(data)
     });
+    if (!res.ok) {
+      if (res.status === 500) {
+        toast.error("Something went wrong on our end!")
+        return;
+      }
+      if (res.status === 401) {
+        toast.error("Your credentials don't match an account in our system")
+        return;
+      }
+    }
 
+    toast.success("Login successfull.")
+    router.push('/')
   };
 
   return (
