@@ -1,4 +1,5 @@
 "use client"
+import React from 'react'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -41,6 +42,7 @@ export default function SignUpPage() {
       },
       body: JSON.stringify(data)
     });
+
     if (!res.ok) {
       if (res.status === 409) {
         toast.error("That email is already in use!")
@@ -100,8 +102,8 @@ export default function SignUpPage() {
             id="confirmPassword"
             label="Confirm Password"
             placeholder="••••••••"
-            {...register("confirmPassword")} // Added confirmPassword
-            error={errors.confirmPassword?.message} // Added error handling for confirmPassword
+            {...register("confirmPassword")} 
+            error={errors.confirmPassword?.message} 
           />
           <Button type="submit" className="w-full">
             Sign Up
