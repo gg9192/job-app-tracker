@@ -3,35 +3,37 @@ import React from 'react'
 import { PasswordInput } from '@/components/passwordinput'
 import { fireEvent } from '@testing-library/react'
 
-beforeEach(() => {
-  render(<PasswordInput id="password" label="Password" />)
-})
+describe('PasswordInput', () => {
+  beforeEach(() => {
+    render(<PasswordInput id="password" label="Password" />)
+  })
 
-test('renders password input', () => {
-  expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
-  expect(screen.getByTestId('eyeclosed')).toBeInTheDocument()
-  const input = screen.getByLabelText(/password/i)
-  expect(input).toHaveAttribute('type', 'password')
-})
+  it('should render the password input', () => {
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
+    expect(screen.getByTestId('eyeclosed')).toBeInTheDocument()
+    const input = screen.getByLabelText(/password/i)
+    expect(input).toHaveAttribute('type', 'password')
+  })
 
-test('it should show the password when the toggle is clicked', () => {
-  fireEvent.click(screen.getByTestId('eyeclosed'))
-  expect(screen.getByTestId('eyeopen')).toBeInTheDocument()
-  const input = screen.getByLabelText(/password/i)
-  expect(input).toHaveAttribute('type', 'text')
-})
+  it('should show the password when the toggle is clicked', () => {
+    fireEvent.click(screen.getByTestId('eyeclosed'))
+    expect(screen.getByTestId('eyeopen')).toBeInTheDocument()
+    const input = screen.getByLabelText(/password/i)
+    expect(input).toHaveAttribute('type', 'text')
+  })
 
-test('it should hide the password when the toggle is clicked twice', () => {
-  const input = screen.getByLabelText(/password/i)
-  fireEvent.click(screen.getByTestId('eyeclosed'))
-  expect(screen.getByTestId('eyeopen')).toBeInTheDocument()
-  expect(input).toHaveAttribute('type', 'text')
-  fireEvent.click(screen.getByTestId('eyeopen'))
-  expect(screen.getByTestId('eyeclosed')).toBeInTheDocument()
-  expect(input).toHaveAttribute('type', 'password')
-})
+  it('should hide the password when the toggle is clicked twice', () => {
+    const input = screen.getByLabelText(/password/i)
+    fireEvent.click(screen.getByTestId('eyeclosed'))
+    expect(screen.getByTestId('eyeopen')).toBeInTheDocument()
+    expect(input).toHaveAttribute('type', 'text')
+    fireEvent.click(screen.getByTestId('eyeopen'))
+    expect(screen.getByTestId('eyeclosed')).toBeInTheDocument()
+    expect(input).toHaveAttribute('type', 'password')
+  })
 
-test('it should display the error correctly', () => {
-  render(<PasswordInput id="password" label="Password" error='Password is required'/>)
-  expect(screen.getByText('Password is required')).toBeInTheDocument()
+  it('should display the error correctly', () => {
+    render(<PasswordInput id="password" label="Password" error='Password is required'/>)
+    expect(screen.getByText('Password is required')).toBeInTheDocument()
+  })
 })
