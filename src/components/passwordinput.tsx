@@ -1,4 +1,8 @@
-function PasswordInput(props: React.ComponentProps<typeof Input> & { label: string; error?: string }) {
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function PasswordInput(props: React.ComponentProps<typeof Input> & { label: string; error?: string }) {
   const [show, setShow] = useState(false);
   return (
     <div>
