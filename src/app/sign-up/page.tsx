@@ -11,6 +11,7 @@ import { PasswordInput } from "@/components/passwordinput";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Link from "@/components/link";
 
 export const clientUserSchema = userSchema
   .extend({
@@ -60,7 +61,7 @@ export default function SignUpPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 pt-5 pb-5">
       <Card className="w-full max-w-md p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-2xl font-semibold text-gray-900">
+        <h1 className="mb-6 text-center text-2xl font-semibold">
           Job Tracker Sign Up
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
@@ -127,14 +128,10 @@ export default function SignUpPage() {
             Sign Up
           </Button>
         </form>
-        <p className="mt-6 text-center text-sm text-gray-600">
+        <p className="mt-6 text-center text-sm ">
           Already have an account?{" "}
-          <a
-            href="/login"
-            className="font-medium text-indigo-600 hover:underline"
-          >
-            Sign In
-          </a>
+          <Link href="/login">Log In</Link>
+          
         </p>
       </Card>
     </div>

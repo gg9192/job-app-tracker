@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, ToasterProps } from "sonner";
+import { palette } from "@/lib/theme/colors";
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme();
@@ -12,9 +13,14 @@ const Toaster = ({ ...props }: ToasterProps) => {
       className="toaster group"
       style={
         {
-          "--normal-bg": "var(--popover)",
-          "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
+          "--normal-bg": `var(--${palette.neutralBg})`,
+          "--normal-text": `var(--${palette.neutralText})`,
+          "--normal-border": `var(--${palette.secondaryBorder})`,
+          "--info-bg": `var(--${palette.infoBg})`,
+          "--success-bg": `var(--${palette.successBg})`,
+          "--warning-bg": `var(--${palette.warningBg})`,
+          "--error-bg": `var(--${palette.dangerBg})`,
+          "--error-text": `var(--${palette.dangerText})`
         } as React.CSSProperties
       }
       {...props}
