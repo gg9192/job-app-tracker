@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { palette } from "@/lib/theme/colors";
 
 export function PasswordInput(
   props: React.ComponentProps<typeof Input> & { label: string; error?: string },
@@ -17,7 +18,7 @@ export function PasswordInput(
         <button
           type="button"
           onClick={() => setShow(!show)}
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-indigo-600 hover:text-indigo-900"
+          className={`absolute right-2 top-1/2 -translate-y-1/2 text-sm ${palette.accentText} hover:brightness-50`}
           tabIndex={-1}
         >
           {show ? (
@@ -56,7 +57,7 @@ export function PasswordInput(
         </button>
       </div>
       {props.error && (
-        <p className="mt-1 text-sm text-red-500">{props.error}</p>
+        <p className={`mt-1 text-sm ${palette.dangerText}`}>{props.error}</p>
       )}
     </div>
   );

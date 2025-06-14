@@ -1,9 +1,10 @@
 
 export const palette = {
-  primaryBg: "bg-gray-700", 
+  primaryBg: "bg-slate-700", 
   secondaryBg: "bg-stone-800", 
   secondaryBorder: "border-stone-800", 
   accentBg: "bg-lime-500", 
+  accentText: "text-lime-500", 
   neutralBg: "bg-white", 
   neutralText: "text-gray-800", 
   lightText: "text-white", 
@@ -11,4 +12,5 @@ export const palette = {
   successBg: "bg-green-500",
   warningBg: "bg-amber-300",
   dangerBg: "bg-red-500",
+  dangerText: "text-red-500"
 };

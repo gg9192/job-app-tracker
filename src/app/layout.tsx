@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { palette } from "@/lib/theme/colors"
+import Link from "@/components/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,24 +34,15 @@ export default function RootLayout({
         )} bg-gradient-to-br ${palette.lightText}`}
       >
         <nav
-          className={`sticky top-0 z-50 w-full backdrop-blur bg-gray-700/80 shadow-xl px-6 py-4 flex justify-between items-center`} // Changed shadow-md to shadow-xl
+          className={`sticky top-0 z-50 w-full backdrop-blur ${palette.primaryBg} shadow-xl px-6 py-4 flex justify-between items-center`} 
         >
           <a href="/" className="text-xl font-bold text-white drop-shadow-sm">
             Job Tracker
           </a>
           <div className="space-x-4">
-            <a
-              href="/login"
-              className="text-white hover:text-lime-200 transition font-medium"
-            >
-              Login
-            </a>
-            <a
-              href="/sign-up"
-              className="text-white hover:text-lime-200 transition font-medium"
-            >
-              Sign Up
-            </a>
+            <Link href="/login">Log In</Link>
+            <Link href="/sign-up">Sign Up</Link>
+            
           </div>
         </nav>
         {children}
