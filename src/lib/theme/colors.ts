@@ -5,6 +5,7 @@ export const palette = {
   secondaryBorder: "border-stone-800", 
   accentBg: "bg-lime-500", 
   accentText: "text-lime-500", 
+  linkHover: "hover:text-lime-500", 
   neutralBg: "bg-white", 
   neutralText: "text-gray-800", 
   lightText: "text-white", 

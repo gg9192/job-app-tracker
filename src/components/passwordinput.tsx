@@ -18,7 +18,7 @@ export function PasswordInput(
         <button
           type="button"
           onClick={() => setShow(!show)}
-          className={`absolute right-2 top-1/2 -translate-y-1/2 text-sm ${palette.accentText} hover:brightness-50`}
+          className={`absolute right-2 top-1/2 -translate-y-1/2 text-sm ${palette.accentText} hover:brightness-70 cursor-pointer`}
           tabIndex={-1}
         >
           {show ? (

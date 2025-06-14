@@ -10,6 +10,7 @@ import { PasswordInput } from "@/components/passwordinput";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import React from "react";
+import Link from "@/components/link";
 
 const schema = z.object({
   email: z.string().email(),
@@ -87,12 +88,9 @@ export default function LoginPage() {
         </form>
         <p className="mt-6 text-center text-sm">
           Don’t have an account?{" "}
-          <a
-            href="/sign-up"
-            className="font-medium  hover:underline"
-          >
+          <Link href="/sign-up">
             Sign Up
-          </a>
+          </Link>
         </p>
       </Card>
     </div>
