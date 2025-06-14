@@ -2,6 +2,7 @@
 export const palette = {
   primaryBg: "bg-gray-700", 
   secondaryBg: "bg-stone-800", 
+  secondaryBorder: "border-stone-800", 
   accentBg: "bg-lime-500", 
   neutralBg: "bg-white", 
   neutralText: "text-gray-800", 
