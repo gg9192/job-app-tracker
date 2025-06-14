@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased ${palette.primary} ${palette.secondary.replace(
+        className={`${geistSans.variable} ${geistMono.variable} antialiased ${palette.primaryBg} ${palette.secondaryBg.replace(
           "bg-",
           "to-"
         )} bg-gradient-to-br ${palette.lightText}`}
