@@ -57,7 +57,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-2xl font-semibold text-gray-900">
+        <h1 className="mb-6 text-center text-2xl font-semibold ">
           Job Tracker Login
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
@@ -85,11 +85,11 @@ export default function LoginPage() {
             Sign In
           </Button>
         </form>
-        <p className="mt-6 text-center text-sm text-gray-600">
+        <p className="mt-6 text-center text-sm">
           Don’t have an account?{" "}
           <a
             href="/sign-up"
-            className="font-medium text-indigo-600 hover:underline"
+            className="font-medium  hover:underline"
           >
             Sign Up
           </a>
