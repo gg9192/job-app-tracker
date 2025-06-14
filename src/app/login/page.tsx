@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,13 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { PasswordInput } from "@/components/passwordinput";
-import { toast } from "sonner"
-import { useRouter } from 'next/navigation'
-import React from 'react'
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 const schema = z.object({
   email: z.string().email(),
-  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -27,29 +29,29 @@ export default function LoginPage() {
     resolver: zodResolver(schema),
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
   const onSubmit = async (data: FormData) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
     if (!res.ok) {
       if (res.status === 500) {
-        toast.error("Something went wrong on our end!")
+        toast.error("Something went wrong on our end!");
         return;
       }
       if (res.status === 401) {
-        toast.error("Your credentials don't match an account in our system")
+        toast.error("Your credentials don't match an account in our system");
         return;
       }
     }
 
-    toast.success("Login successfull.")
-    router.push('/')
+    toast.success("Login successfull.");
+    router.push("/");
   };
 
   return (
@@ -85,7 +87,10 @@ export default function LoginPage() {
         </form>
         <p className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{" "}
-          <a href="/sign-up" className="font-medium text-indigo-600 hover:underline">
+          <a
+            href="/sign-up"
+            className="font-medium text-indigo-600 hover:underline"
+          >
             Sign Up
           </a>
         </p>

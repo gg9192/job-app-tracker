@@ -29,7 +29,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-indigo-600 to-purple-700`}
       >
         {children}
-        <Toaster/>
+        <Toaster />
       </body>
     </html>
   );

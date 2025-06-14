@@ -1,5 +1,5 @@
-"use client"
-import React from 'react'
+"use client";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -9,18 +9,19 @@ import { Card } from "@/components/ui/card";
 import { userSchema } from "@/lib/validators/user";
 import { PasswordInput } from "@/components/passwordinput";
 import { z } from "zod";
-import { toast } from "sonner"
-import { useRouter } from 'next/navigation'
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-export const clientUserSchema = userSchema.extend({
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  path: ["confirmPassword"],
-  message: "Passwords do not match",
-});
+export const clientUserSchema = userSchema
+  .extend({
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
 
 export type ClientUserSchema = z.infer<typeof clientUserSchema>;
-
 
 export default function SignUpPage() {
   const {
@@ -31,30 +32,29 @@ export default function SignUpPage() {
     resolver: zodResolver(clientUserSchema),
   });
 
-  const router = useRouter()
-
+  const router = useRouter();
 
   const onSubmit = async (data: ClientUserSchema) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/signup`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     if (!res.ok) {
       if (res.status === 409) {
-        toast.error("That email is already in use!")
+        toast.error("That email is already in use!");
         return;
       }
       if (res.status === 500) {
-        toast.error("Something went wrong on our end!")
+        toast.error("Something went wrong on our end!");
         return;
       }
     }
-    toast.success("Your account was created.")
-    router.push('/login')
+    toast.success("Your account was created.");
+    router.push("/login");
   };
 
   return (
@@ -65,19 +65,33 @@ export default function SignUpPage() {
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <Label htmlFor="firstname" className="mb-1 block text-sm font-medium">
+            <Label
+              htmlFor="firstname"
+              className="mb-1 block text-sm font-medium"
+            >
               First Name
             </Label>
-            <Input id="firstname" placeholder="First name" {...register("firstname")} />
+            <Input
+              id="firstname"
+              placeholder="First name"
+              {...register("firstname")}
+            />
             {errors.firstname && (
               <p className="text-sm text-red-500">{errors.firstname.message}</p>
             )}
           </div>
           <div>
-            <Label htmlFor="lastname" className="mb-1 block text-sm font-medium">
+            <Label
+              htmlFor="lastname"
+              className="mb-1 block text-sm font-medium"
+            >
               Last Name
             </Label>
-            <Input id="lastname" placeholder="Last name" {...register("lastname")} />
+            <Input
+              id="lastname"
+              placeholder="Last name"
+              {...register("lastname")}
+            />
             {errors.lastname && (
               <p className="text-sm text-red-500">{errors.lastname.message}</p>
             )}
@@ -86,7 +100,11 @@ export default function SignUpPage() {
             <Label htmlFor="email" className="mb-1 block text-sm font-medium">
               Email
             </Label>
-            <Input id="email" placeholder="you@example.com" {...register("email")} />
+            <Input
+              id="email"
+              placeholder="you@example.com"
+              {...register("email")}
+            />
             {errors.email && (
               <p className="text-sm text-red-500">{errors.email.message}</p>
             )}
@@ -102,8 +120,8 @@ export default function SignUpPage() {
             id="confirmPassword"
             label="Confirm Password"
             placeholder="••••••••"
-            {...register("confirmPassword")} 
-            error={errors.confirmPassword?.message} 
+            {...register("confirmPassword")}
+            error={errors.confirmPassword?.message}
           />
           <Button type="submit" className="w-full">
             Sign Up
@@ -111,7 +129,10 @@ export default function SignUpPage() {
         </form>
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="font-medium text-indigo-600 hover:underline">
+          <a
+            href="/login"
+            className="font-medium text-indigo-600 hover:underline"
+          >
             Sign In
           </a>
         </p>

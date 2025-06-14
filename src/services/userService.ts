@@ -1,8 +1,7 @@
-import prisma from '@/lib/prisma';
+import prisma from "@/lib/prisma";
 import { userSchema } from "@/lib/validators/user";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
-
 
 interface UserInput {
   firstname: string;
@@ -12,7 +11,7 @@ interface UserInput {
   confirmPassword: string;
 }
 
-type NewUser = Omit<UserInput, 'confirmPassword'>;
+type NewUser = Omit<UserInput, "confirmPassword">;
 
 export async function createUser(data: UserInput) {
   const parsed = userSchema.parse(data);
@@ -24,27 +23,34 @@ export async function createUser(data: UserInput) {
   return await prisma.userModel.create({ data: newUser });
 }
 
-export async function validateLoginAndReturnSession(email: string, password: string): Promise<string | null> {
+export async function validateLoginAndReturnSession(
+  email: string,
+  password: string,
+): Promise<string | null> {
   const user = await prisma.userModel.findUnique({
     where: {
-      email: email
+      email: email,
     },
-  })
+  });
 
-  if (user === null) { return null }
+  if (user === null) {
+    return null;
+  }
 
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) { return null }
+  if (!isMatch) {
+    return null;
+  }
 
-  const sessionToken = nanoid()
+  const sessionToken = nanoid();
   await prisma.userModel.update({
     where: {
-      email: email
+      email: email,
     },
     data: {
-      session: sessionToken
-    }
-  })
+      session: sessionToken,
+    },
+  });
 
-  return sessionToken
+  return sessionToken;
 }
