@@ -1,6 +1,6 @@
 import { createUser } from "@/services/userService";
 import { ZodError } from "zod";
-import { isUniqueConstraintError } from "@/lib/db-utils/isUniqueConstraintError";
+import { isUniqueConstraintError } from "@/lib/utils/isUniqueConstraintError";
 
 export async function POST(request: Request) {
   try {
