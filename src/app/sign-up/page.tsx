@@ -16,7 +16,6 @@ import { palette } from "@/lib/theme/colors";
 
 export const clientUserSchema = userSchema
   .extend({
-    password: z.string().min(1, "Password is required"),
     confirmPassword: z.string().min(1, "Confirm Password is required"),
   })
   .refine((data) => data.password === data.confirmPassword, {
