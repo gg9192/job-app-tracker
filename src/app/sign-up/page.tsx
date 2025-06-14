@@ -12,10 +12,12 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "@/components/link";
+import { palette } from "@/lib/theme/colors";
 
 export const clientUserSchema = userSchema
   .extend({
-    confirmPassword: z.string(),
+    password: z.string().min(1, "Password is required"),
+    confirmPassword: z.string().min(1, "Confirm Password is required"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
@@ -78,7 +80,7 @@ export default function SignUpPage() {
               {...register("firstname")}
             />
             {errors.firstname && (
-              <p className="text-sm text-red-500">{errors.firstname.message}</p>
+              <p className={`text-sm ${palette.dangerText}`}>{errors.firstname.message}</p>
             )}
           </div>
           <div>
@@ -94,7 +96,7 @@ export default function SignUpPage() {
               {...register("lastname")}
             />
             {errors.lastname && (
-              <p className="text-sm text-red-500">{errors.lastname.message}</p>
+              <p className={`text-sm ${palette.dangerText}`}>{errors.lastname.message}</p>
             )}
           </div>
           <div>
@@ -107,7 +109,7 @@ export default function SignUpPage() {
               {...register("email")}
             />
             {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
+              <p className={`text-sm ${palette.dangerText}`}>{errors.email.message}</p>
             )}
           </div>
           <PasswordInput
