@@ -45,9 +45,7 @@ export default async function RootLayout({
         <nav
           className={`sticky top-0 z-50 w-full backdrop-blur ${palette.primaryBg} shadow-xl px-6 py-4 flex justify-between items-center`}
         >
-          <a href="/" className="text-xl font-bold text-white drop-shadow-sm">
-            Job Tracker
-          </a>
+          <Link href="/" size="xl">Job Tracker</Link>
 
           {isLoggedIn ? (
             <div className="space-x-4">
