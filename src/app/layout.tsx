@@ -34,7 +34,6 @@ export default async function RootLayout({
   const currentUser = await getLoggedInUser(session);
   const isLoggedIn = currentUser !== null;
 
-  function handleLogOut() {}
 
   return (
     <html lang="en">

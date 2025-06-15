@@ -69,3 +69,15 @@ export async function getLoggedInUser(token: string | undefined) {
   }
   return session.user;
 }
+
+export async function logout(token: string | undefined) {
+  if (token === undefined) {
+    return;
+  }
+
+  await prisma.session.delete({
+    where: {
+      token: token,
+    },
+  });
+}

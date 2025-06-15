@@ -52,7 +52,9 @@ export default function LoginPage() {
     }
 
     toast.success("Login successfull!");
-    router.push("/");
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1500);
   };
 
   return (
