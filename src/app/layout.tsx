@@ -6,6 +6,7 @@ import { palette } from "@/lib/theme/colors";
 import { Link } from "@/components/link";
 import { getLoggedInUser } from "@/services/userService";
 import { cookies } from "next/headers";
+import { LogoutButton } from "@/components/logoutbutton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,8 @@ export default async function RootLayout({
   const currentUser = await getLoggedInUser(session);
   const isLoggedIn = currentUser !== null;
 
+  function handleLogOut() {}
+
   return (
     <html lang="en">
       <body
@@ -49,7 +52,9 @@ export default async function RootLayout({
           </a>
 
           {isLoggedIn ? (
-            <></>
+            <div className="space-x-4">
+              <LogoutButton />
+            </div>
           ) : (
             <div className="space-x-4">
               <Link href="/login">Log In</Link>

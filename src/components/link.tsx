@@ -17,16 +17,16 @@ export function Link({
   );
 }
 
-export default function LinkStyledButton({
-  onClick,
+export function LinkStyledButton({
+  handleClick,
   children,
 }: {
-  onClick: () => void;
+  handleClick: () => void;
   children: React.ReactNode;
 }) {
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       className={`${palette.lightText} ${palette.linkHover} transition font-medium hover:cursor-pointer`}
     >
       {children}
