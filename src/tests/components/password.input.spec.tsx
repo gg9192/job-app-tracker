@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import React from 'react'
 import { PasswordInput } from '@/components/passwordinput'
 import { fireEvent } from '@testing-library/react'
 
