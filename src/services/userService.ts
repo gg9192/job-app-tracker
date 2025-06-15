@@ -54,6 +54,18 @@ export async function validateLoginAndReturnSession(
   return sessionToken;
 }
 
-export async function getLoggedInUser(token: string) {
+export async function getLoggedInUser(token: string | undefined) {
+  if (token === undefined) {
+    return null;
+  }
 
+  const session = await prisma.session.findUnique({
+    where: { token: token },
+    include: { user: true },
+  });
+
+  if (session === null) {
+    return null;
+  }
+  return session.user;
 }

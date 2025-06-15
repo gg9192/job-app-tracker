@@ -1,6 +1,6 @@
 import { palette } from "@/lib/theme/colors";
 
-export default function Link({
+export function Link({
   href,
   children,
 }: {
@@ -14,5 +14,22 @@ export default function Link({
     >
       {children}
     </a>
+  );
+}
+
+export default function LinkStyledButton({
+  onClick,
+  children,
+}: {
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`${palette.lightText} ${palette.linkHover} transition font-medium hover:cursor-pointer`}
+    >
+      {children}
+    </button>
   );
 }

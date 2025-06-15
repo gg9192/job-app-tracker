@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card";
 import { PasswordInput } from "@/components/passwordinput";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import Link from "@/components/link";
+import { Link } from "@/components/link";
 
 const schema = z.object({
   email: z.string().email(),
@@ -51,7 +51,7 @@ export default function LoginPage() {
       }
     }
 
-    toast.success("Login successfull.");
+    toast.success("Login successfull!");
     router.push("/");
   };
 

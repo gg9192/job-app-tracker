@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import Link from '@/components/link'
+import {Link} from '@/components/link'
 
 describe('PasswordInput', () => {
   beforeEach(() => {

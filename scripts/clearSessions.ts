@@ -1,4 +1,4 @@
-const { PrismaClient } = require('../src/generated/prisma');
+const { PrismaClient } = require("../src/generated/prisma");
 const prisma = new PrismaClient();
 
 async function clearExpiredSessions() {
@@ -11,8 +11,10 @@ async function clearExpiredSessions() {
   });
 
   console.log(`Deleted ${result.count} expired sessions.`);
+  await prisma.$disconnect();
 }
 
 clearExpiredSessions().catch((e) => {
   console.error(`caught an error clearing sessions ${e}`);
+  prisma.$disconnect();
 });

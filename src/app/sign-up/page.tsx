@@ -11,7 +11,7 @@ import { PasswordInput } from "@/components/passwordinput";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import Link from "@/components/link";
+import { Link } from "@/components/link";
 import { palette } from "@/lib/theme/colors";
 
 export const clientUserSchema = userSchema
