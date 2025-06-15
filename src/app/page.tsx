@@ -1,5 +1,6 @@
 import { getLoggedInUser } from "@/services/userService";
 import { cookies } from "next/headers";
+import { PageButton } from "@/components/pageButton";
 
 function unauthUserLandingPage() {
   return (
@@ -13,18 +14,8 @@ function unauthUserLandingPage() {
           and offer: beautifully and efficiently.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="/sign-up"
-            className="px-8 py-3 border border-white text-white font-semibold rounded-xl hover:bg-white/10 transition"
-          >
-            Get Started
-          </a>
-          <a
-            href="/login"
-            className="px-8 py-3 border border-white text-white font-semibold rounded-xl hover:bg-white/10 transition"
-          >
-            Login
-          </a>
+          <PageButton href="/sign-up">Get Started</PageButton>
+          <PageButton href="/login">Login</PageButton>
         </div>
       </section>
     </main>
@@ -32,7 +23,7 @@ function unauthUserLandingPage() {
 }
 
 function loggedInUserDashboard() {
-   return (
+  return (
     <main className="p-6 space-y-6">
       <section className="grid gap-6 lg:grid-cols-3">
         <div className="col-span-2 bg-white text-gray-800 rounded-xl shadow p-6">
@@ -88,18 +79,14 @@ function loggedInUserDashboard() {
       </section>
     </main>
   );
-
 }
-
 
 export default async function LandingPage() {
   const cookieStore = await cookies();
-    const session = cookieStore.get("session")?.value;
-  
-    const currentUser = await getLoggedInUser(session);
-    const isLoggedIn = currentUser !== null;
+  const session = cookieStore.get("session")?.value;
 
-    return isLoggedIn ? loggedInUserDashboard() : unauthUserLandingPage()
+  const currentUser = await getLoggedInUser(session);
+  const isLoggedIn = currentUser !== null;
 
-
+  return isLoggedIn ? loggedInUserDashboard() : unauthUserLandingPage();
 }

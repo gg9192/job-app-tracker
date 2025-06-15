@@ -1,4 +1,5 @@
 import { palette } from "@/lib/theme/colors";
+import NextLink from "next/link";
 
 type Sizes = "xl" | "md"
 
@@ -19,12 +20,12 @@ export function Link({
   size?: Sizes;
 }) {
   return (
-    <a
+    <NextLink
       href={href}
       className={`${palette.lightText} ${palette.linkHover} transition ${getSizeStyling(size)} hover:cursor-pointer`}
     >
       {children}
-    </a>
+    </NextLink>
   );
 }
 
