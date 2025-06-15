@@ -1,5 +1,5 @@
-
 import Link from "next/link"
+import { palette } from "@/lib/theme/colors"
 
 type AuthLinkButtonProps = {
   href: string
@@ -10,7 +10,7 @@ export function PageButton({ href, children }: AuthLinkButtonProps) {
   return (
     <Link
       href={href}
-      className="px-8 py-3 border border-white text-white font-semibold rounded-xl hover:bg-white/10 transition"
+      className={`text-white border border-white px-8 py-3 font-semibold rounded-xl transition ${palette.buttonHover} ${palette.linkHover}`}
     >
       {children}
     </Link>
