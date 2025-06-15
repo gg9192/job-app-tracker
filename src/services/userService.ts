@@ -43,12 +43,11 @@ export async function validateLoginAndReturnSession(
   }
 
   const sessionToken = nanoid();
-  await prisma.userModel.update({
-    where: {
-      email: email,
-    },
+  await prisma.session.create({
     data: {
-      session: sessionToken,
+      token: sessionToken,
+      userId: user.id,
+      expiresAt: new Date(Date.now() + 30 * 60 * 1000),
     },
   });
 
@@ -56,9 +55,5 @@ export async function validateLoginAndReturnSession(
 }
 
 export async function getLoggedInUser(token: string) {
-  return await prisma.userModel.findUnique({
-    where: {
-      email: "elsa@prisma.io",
-    },
-  });
+
 }
