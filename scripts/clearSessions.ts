@@ -11,10 +11,8 @@ async function clearExpiredSessions() {
   });
 
   console.log(`Deleted ${result.count} expired sessions.`);
-  await prisma.$disconnect();
 }
 
 clearExpiredSessions().catch((e) => {
-  console.error(e);
-  prisma.$disconnect();
+  console.error(`caught an error clearing sessions ${e}`);
 });
