@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -19,16 +13,29 @@ model UserModel {
   firstname    String
   lastname     String
   email        String        @unique
-  session      String?       
+  password     String
+  sessions     Session[]
   experiences  Experience[]
   savedresumes Resume[]
-  password     String
   Application  Application[]
-  @@index([session])
+
+  @@index([email])
 }
 
+model Session {
+  id          Int       @id @default(autoincrement())
+  token       String    @unique
+  user        UserModel @relation(fields: [userId], references: [id])
+  userId      Int
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime
+
+  @@index([userId])
+}
+
+
 model Experience {
-  id           Int    @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   title        String
   company      String
   description  String
@@ -39,10 +46,10 @@ model Experience {
 }
 
 model Resume {
-  id           Int           @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   name         String
   s3link       String
-  owninguser   UserModel          @relation(fields: [owninguserID], references: [id])
+  owninguser   UserModel @relation(fields: [owninguserID], references: [id])
   owninguserID Int
   Application  Application[]
 
@@ -75,7 +82,7 @@ model Application {
   jobtags         JobTag[]
   resume          Resume?   @relation(fields: [resumeID], references: [id])
   resumeID        Int?
-  owninguser      UserModel      @relation(fields: [owninguserID], references: [id])
+  owninguser      UserModel @relation(fields: [owninguserID], references: [id])
   owninguserID    Int
 
   @@index([owninguserID])

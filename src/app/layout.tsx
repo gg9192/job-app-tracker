@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { palette } from "@/lib/theme/colors"
+import { palette } from "@/lib/theme/colors";
 import Link from "@/components/link";
 
 const geistSans = Geist({
@@ -30,11 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased ${palette.primaryBg} ${palette.secondaryBg.replace(
           "bg-",
-          "to-"
+          "to-",
         )} bg-gradient-to-br ${palette.lightText}`}
       >
         <nav
-          className={`sticky top-0 z-50 w-full backdrop-blur ${palette.primaryBg} shadow-xl px-6 py-4 flex justify-between items-center`} 
+          className={`sticky top-0 z-50 w-full backdrop-blur ${palette.primaryBg} shadow-xl px-6 py-4 flex justify-between items-center`}
         >
           <a href="/" className="text-xl font-bold text-white drop-shadow-sm">
             Job Tracker
@@ -42,7 +42,6 @@ export default function RootLayout({
           <div className="space-x-4">
             <Link href="/login">Log In</Link>
             <Link href="/sign-up">Sign Up</Link>
-            
           </div>
         </nav>
         {children}

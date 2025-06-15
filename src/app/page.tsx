@@ -6,7 +6,8 @@ export default function LandingPage() {
           Organize Your Job Hunt with Confidence
         </h1>
         <p className="text-lg mb-8 text-white/90 drop-shadow-sm">
-          Our job tracker helps you stay on top of every application, interview, and offer: beautifully and efficiently.
+          Our job tracker helps you stay on top of every application, interview,
+          and offer: beautifully and efficiently.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a

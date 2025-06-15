@@ -79,7 +79,9 @@ export default function SignUpPage() {
               {...register("firstname")}
             />
             {errors.firstname && (
-              <p className={`text-sm ${palette.dangerText}`}>{errors.firstname.message}</p>
+              <p className={`text-sm ${palette.dangerText}`}>
+                {errors.firstname.message}
+              </p>
             )}
           </div>
           <div>
@@ -95,7 +97,9 @@ export default function SignUpPage() {
               {...register("lastname")}
             />
             {errors.lastname && (
-              <p className={`text-sm ${palette.dangerText}`}>{errors.lastname.message}</p>
+              <p className={`text-sm ${palette.dangerText}`}>
+                {errors.lastname.message}
+              </p>
             )}
           </div>
           <div>
@@ -108,7 +112,9 @@ export default function SignUpPage() {
               {...register("email")}
             />
             {errors.email && (
-              <p className={`text-sm ${palette.dangerText}`}>{errors.email.message}</p>
+              <p className={`text-sm ${palette.dangerText}`}>
+                {errors.email.message}
+              </p>
             )}
           </div>
           <PasswordInput
@@ -130,9 +136,7 @@ export default function SignUpPage() {
           </Button>
         </form>
         <p className="mt-6 text-center text-sm ">
-          Already have an account?{" "}
-          <Link href="/login">Log In</Link>
-          
+          Already have an account? <Link href="/login">Log In</Link>
         </p>
       </Card>
     </div>

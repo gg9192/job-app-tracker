@@ -54,3 +54,11 @@ export async function validateLoginAndReturnSession(
 
   return sessionToken;
 }
+
+export async function getLoggedInUser(token: string) {
+  return await prisma.userModel.findUnique({
+    where: {
+      email: "elsa@prisma.io",
+    },
+  });
+}
