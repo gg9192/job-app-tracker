@@ -20,6 +20,7 @@ vi.mock('@/lib/prisma', () => ({
     session: {
       findUnique: vi.fn(),
       create: vi.fn(),
+      delete: vi.fn(),
     }
   },
 }))
@@ -33,6 +34,7 @@ const mockUpdateUserModel = prisma.userModel.update as ReturnType<typeof vi.fn>
 
 const mockFindUniqueSession = prisma.session.findUnique as ReturnType<typeof vi.fn>
 const mockCreateSession = prisma.session.create as ReturnType<typeof vi.fn>
+const mockDeleteSession = prisma.session.delete as ReturnType<typeof vi.fn>
 
 describe('userService', () => {
   beforeEach(() => {
@@ -128,7 +130,10 @@ describe('userService', () => {
   })
 
   describe('logout', () => {
-    it('should call to delete the token', () => { })
+    it('should call to delete the token', async () => { 
+      await logout('session')
+      expect(mockDeleteSession).toHaveBeenCalledOnce()
+    })
   })
 
 })

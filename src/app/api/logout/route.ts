@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   try {
     const cookieStore = await cookies();
     const session = cookieStore.get("session")?.value;
-    await logout(session)
+    await logout(session);
 
     return new Response("Log out successful", {
       status: 200,

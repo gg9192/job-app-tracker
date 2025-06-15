@@ -29,7 +29,6 @@ export default function LoginPage() {
     resolver: zodResolver(schema),
   });
 
-
   const onSubmit = async (data: FormData) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       method: "POST",
