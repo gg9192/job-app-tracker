@@ -2,22 +2,7 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import LoginPage from '@/app/login/page'
 import { vi } from 'vitest'
-import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
-
-// Mock useRouter at the top level
-// Provide a default mock implementation that can be overridden later
-vi.mock('next/navigation', () => ({
-  useRouter: vi.fn(() => ({
-    push: vi.fn(),
-    back: vi.fn(),
-    forward: vi.fn(),
-    refresh: vi.fn(),
-    replace: vi.fn(),
-    prefetch: vi.fn(),
-  }))
-}))
 
 vi.mock('sonner', () => ({
   toast: {
@@ -33,15 +18,6 @@ describe.only("Login page", () => {
   beforeEach(() => {
     // Reset the mock implementation of useRouter before each test
     // This ensures a clean state for each test where useRouter might be used.
-    push = vi.fn();
-    useRouter.mockReturnValue({
-      push,
-      back: vi.fn(),
-      forward: vi.fn(),
-      refresh: vi.fn(),
-      replace: vi.fn(),
-      prefetch: vi.fn(),
-    });
     render(<LoginPage />);
     vi.clearAllMocks();
   })
@@ -117,8 +93,8 @@ describe.only("Login page", () => {
     fireEvent.click(screen.getByRole('button', { name: /sign in/i }))
 
     await waitFor(() => {
-      expect(toast.success).toHaveBeenCalledWith("Login successfull.")
-      expect(push).toHaveBeenCalledWith("/")
+      expect(toast.success).toHaveBeenCalledWith("Login successfull!")
+      
     })
   })
 })

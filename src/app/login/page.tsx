@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { PasswordInput } from "@/components/passwordinput";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { Link } from "@/components/link";
 
 const schema = z.object({
@@ -30,7 +29,6 @@ export default function LoginPage() {
     resolver: zodResolver(schema),
   });
 
-  const router = useRouter();
 
   const onSubmit = async (data: FormData) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
