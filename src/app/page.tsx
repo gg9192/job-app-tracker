@@ -1,7 +1,10 @@
 import { getLoggedInUser } from "@/services/userService";
 import { cookies } from "next/headers";
-import { PageButton } from "@/components/pageButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/components/link";
+import ButtonStyledLink from "@/components/buttonstyledlink";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 function unauthUserLandingPage() {
   return (
@@ -14,9 +17,9 @@ function unauthUserLandingPage() {
           Our job tracker helps you stay on top of every application, interview,
           and offer: beautifully and efficiently.
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <PageButton href="/sign-up">Get Started</PageButton>
-          <PageButton href="/login">Login</PageButton>
+        <div className="flex flex-col sm:flex-row items-center justify-evenly gap-4">
+          <Link href="/sign-up" size="xl">Get Started</Link>
+          <Link href="/login" size="xl">Login</Link>
         </div>
       </section>
     </main>
@@ -41,19 +44,13 @@ function loggedInUserDashboard() {
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 flex flex-col">
             {[
               { href: "/applications/new", text: "Add New Application" },
               { href: "/resumes/upload", text: "Upload New Resume" },
               { href: "/experience/add", text: "Add Experience" },
             ].map((action) => (
-              <a
-                key={action.href}
-                href={action.href}
-                className="block text-center px-6 py-2 border font-semibold rounded-xl hover:bg-gray-100 transition"
-              >
-                {action.text}
-              </a>
+              <ButtonStyledLink href={action.href} key={action.href}>{action.text}</ButtonStyledLink>
             ))}
           </CardContent>
         </Card>
@@ -65,11 +62,16 @@ function loggedInUserDashboard() {
           <CardTitle>Search Applications</CardTitle>
         </CardHeader>
         <CardContent>
-          <input
-            type="text"
-            placeholder="Search by company, position, or keyword"
-            
-          />
+          <div className="flex flex-column">
+            <Input
+              type="text"
+              placeholder="Search by company, position, or keyword"
+              className="h-10"
+            />
+            <Button className="ml-4 h-10 w-10">
+              <svg className="w-100 h-100" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+            </Button>
+          </div>
         </CardContent>
       </Card>
 

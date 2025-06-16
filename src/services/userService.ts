@@ -60,7 +60,9 @@ export async function getLoggedInUser(token: string | undefined) {
   }
 
   const session = await prisma.session.findUnique({
-    where: { token: token },
+    where: { token: token,
+      expiresAt: {gt: new Date()}
+     },
     include: { user: true },
   });
 
