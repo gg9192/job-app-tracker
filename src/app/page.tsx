@@ -26,8 +26,9 @@ function unauthUserLandingPage() {
 function loggedInUserDashboard() {
   return (
     <main className="p-6 space-y-6">
+      {/* Top Section: Interviews and Quick Actions */}
       <section className="grid gap-6 lg:grid-cols-3">
-        <Card className="col-span-2">
+        <Card className="col-span-2 border rounded-lg shadow-sm">
           <CardHeader>
             <CardTitle>Upcoming Interviews</CardTitle>
           </CardHeader>
@@ -36,34 +37,30 @@ function loggedInUserDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border rounded-lg shadow-sm">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <a
-              href="/applications/new"
-              className="block text-center px-6 py-2 border border-gray-800 text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition"
-            >
-              Add New Application
-            </a>
-            <a
-              href="/resumes/upload"
-              className="block text-center px-6 py-2 border border-gray-800 text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition"
-            >
-              Upload New Resume
-            </a>
-            <a
-              href="/experience/add"
-              className="block text-center px-6 py-2 border border-gray-800 text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition"
-            >
-              Add Experience
-            </a>
+            {[
+              { href: "/applications/new", text: "Add New Application" },
+              { href: "/resumes/upload", text: "Upload New Resume" },
+              { href: "/experience/add", text: "Add Experience" },
+            ].map((action) => (
+              <a
+                key={action.href}
+                href={action.href}
+                className="block text-center px-6 py-2 border font-semibold rounded-xl hover:bg-gray-100 transition"
+              >
+                {action.text}
+              </a>
+            ))}
           </CardContent>
         </Card>
       </section>
 
-      <Card>
+      {/* Search Applications */}
+      <Card className="border rounded-lg shadow-sm">
         <CardHeader>
           <CardTitle>Search Applications</CardTitle>
         </CardHeader>
@@ -71,28 +68,30 @@ function loggedInUserDashboard() {
           <input
             type="text"
             placeholder="Search by company, position, or keyword"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-lime-400"
+            
           />
         </CardContent>
       </Card>
 
-      <Card>
+      {/* Recent Resumes */}
+      <Card className="border rounded-lg shadow-sm">
         <CardHeader>
           <CardTitle>Recent Resumes</CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="list-disc pl-5">
+          <ul className="list-disc pl-5 space-y-1">
             <li>resume_v3.pdf - Uploaded 2 days ago</li>
             <li>resume_startup_focused.pdf - Uploaded last week</li>
           </ul>
         </CardContent>
       </Card>
 
-      <Card>
+      {/* Insights & Analytics */}
+      <Card className="border rounded-lg shadow-sm">
         <CardHeader>
           <CardTitle>Insights & Analytics</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-1">
           <p>You have applied to 14 jobs this month.</p>
           <p>2 interviews scheduled</p>
           <p>5 applications waiting for response</p>
@@ -101,6 +100,7 @@ function loggedInUserDashboard() {
     </main>
   );
 }
+
 
 export default async function LandingPage() {
   const cookieStore = await cookies();
