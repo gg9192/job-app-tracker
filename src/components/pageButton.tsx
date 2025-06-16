@@ -10,7 +10,7 @@ export function PageButton({ href, children }: AuthLinkButtonProps) {
   return (
     <Link
       href={href}
-      className={`text-white border border-white px-8 py-3 font-semibold rounded-xl transition ${palette.buttonHover} ${palette.linkHover}`}
+      className={`text-white border border-white px-8 py-3 font-semibold rounded-xl transition border-5 ${palette.buttonHover} ${palette.linkHover}`}
     >
       {children}
     </Link>

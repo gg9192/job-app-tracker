@@ -1,6 +1,7 @@
 import { getLoggedInUser } from "@/services/userService";
 import { cookies } from "next/headers";
 import { PageButton } from "@/components/pageButton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 function unauthUserLandingPage() {
   return (
@@ -26,57 +27,77 @@ function loggedInUserDashboard() {
   return (
     <main className="p-6 space-y-6">
       <section className="grid gap-6 lg:grid-cols-3">
-        <div className="col-span-2 bg-white text-gray-800 rounded-xl shadow p-6">
-          <h2 className="text-xl font-bold mb-4">Upcoming Interviews</h2>
-          <p className="text-gray-600">You have no upcoming interviews.</p>
-        </div>
+        <Card className="col-span-2">
+          <CardHeader>
+            <CardTitle>Upcoming Interviews</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>You have no upcoming interviews.</p>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white text-gray-800 rounded-xl shadow p-6 space-y-4">
-          <h2 className="text-xl font-bold">Quick Actions</h2>
-          <a
-            href="/applications/new"
-            className="block text-center px-6 py-2 border border-gray-800 text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition"
-          >
-            Add New Application
-          </a>
-          <a
-            href="/resumes/upload"
-            className="block text-center px-6 py-2 border border-gray-800 text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition"
-          >
-            Upload New Resume
-          </a>
-          <a
-            href="/experience/add"
-            className="block text-center px-6 py-2 border border-gray-800 text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition"
-          >
-            Add Experience
-          </a>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <a
+              href="/applications/new"
+              className="block text-center px-6 py-2 border border-gray-800 text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition"
+            >
+              Add New Application
+            </a>
+            <a
+              href="/resumes/upload"
+              className="block text-center px-6 py-2 border border-gray-800 text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition"
+            >
+              Upload New Resume
+            </a>
+            <a
+              href="/experience/add"
+              className="block text-center px-6 py-2 border border-gray-800 text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition"
+            >
+              Add Experience
+            </a>
+          </CardContent>
+        </Card>
       </section>
 
-      <section className="bg-white text-gray-800 rounded-xl shadow p-6">
-        <h2 className="text-xl font-bold mb-4">Search Applications</h2>
-        <input
-          type="text"
-          placeholder="Search by company, position, or keyword"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-lime-400"
-        />
-      </section>
+      <Card>
+        <CardHeader>
+          <CardTitle>Search Applications</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <input
+            type="text"
+            placeholder="Search by company, position, or keyword"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-lime-400"
+          />
+        </CardContent>
+      </Card>
 
-      <section className="bg-white text-gray-800 rounded-xl shadow p-6">
-        <h2 className="text-xl font-bold mb-4">Recent Resumes</h2>
-        <ul className="list-disc pl-5 text-gray-700">
-          <li>resume_v3.pdf - Uploaded 2 days ago</li>
-          <li>resume_startup_focused.pdf - Uploaded last week</li>
-        </ul>
-      </section>
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Resumes</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-disc pl-5">
+            <li>resume_v3.pdf - Uploaded 2 days ago</li>
+            <li>resume_startup_focused.pdf - Uploaded last week</li>
+          </ul>
+        </CardContent>
+      </Card>
 
-      <section className="bg-white text-gray-800 rounded-xl shadow p-6">
-        <h2 className="text-xl font-bold mb-4">Insights & Analytics</h2>
-        <p className="text-gray-600">You have applied to 14 jobs this month.</p>
-        <p className="text-gray-600">2 interviews scheduled</p>
-        <p className="text-gray-600">5 applications waiting for response</p>
-      </section>
+      <Card>
+        <CardHeader>
+          <CardTitle>Insights & Analytics</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>You have applied to 14 jobs this month.</p>
+          <p>2 interviews scheduled</p>
+          <p>5 applications waiting for response</p>
+        </CardContent>
+      </Card>
     </main>
   );
 }
