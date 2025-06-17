@@ -8,8 +8,10 @@ import { Button } from "@/components/ui/button";
 import { JobBoardLogoDisplay } from "@/components/jobboardlogodisplay";
 import { JobBoards } from "@/components/jobboardlogodisplay";
 import { RecentActivityLink } from "@/components/recentactivitylink";
+import { CalendarDays } from 'lucide-react'; // Example icons, you might need to install 'lucide-react'
+import { DashboardUpcomingInterviewComponent } from "@/components/dashboardupcominginterview";
 
-
+// --- Existing Functions (Copy-pasted for completeness, no changes here) ---
 function getRandomPhrase(): string {
   const phrases = [
     "Let’s get that bread!",
@@ -91,6 +93,16 @@ function unauthUserLandingPage() {
   );
 }
 
+// --- New/Modified Code for Upcoming Interviews ---
+interface Interview {
+  id: number;
+  jobTitle: string;
+  company: string;
+  date: string; // e.g., "June 25th"
+  time: string; // e.g., "2:00 PM EST"
+  type: string; // e.g., "Video Call (Zoom)", "On-site"
+}
+
 function loggedInUserDashboard(firstName: String) {
 
   const activities = [
@@ -108,6 +120,55 @@ function loggedInUserDashboard(firstName: String) {
       time: "Yesterday",
     },
   ];
+
+  const fakeUpcomingInterviews: Interview[] = [
+    {
+      id: 1,
+      jobTitle: "Senior Software Engineer",
+      company: "Innovate Solutions",
+      date: "Tomorrow, June 18th",
+      time: "10:00 AM PST",
+      type: "Video Call (Google Meet)",
+    },
+    {
+      id: 2,
+      jobTitle: "Product Manager",
+      company: "Global Tech",
+      date: "Friday, June 20th",
+      time: "3:30 PM EST",
+      type: "On-site Interview",
+    },
+    {
+      id: 3,
+      jobTitle: "Data Scientist",
+      company: "Quantify Labs",
+      date: "Monday, June 23rd",
+      time: "11:00 AM CST",
+      type: "Phone Screen",
+    },
+    {
+      id: 4,
+      jobTitle: "DevOps Engineer",
+      company: "CloudCore",
+      date: "Wednesday, June 25th",
+      time: "1:00 PM EST",
+      type: "Technical Interview (Zoom)",
+    },
+    {
+      id: 5,
+      jobTitle: "UX Researcher",
+      company: "UserFirst Design",
+      date: "Friday, June 27th",
+      time: "9:00 AM PST",
+      type: "Portfolio Review",
+    },
+  ];
+
+  const upcomingInterviewsToDisplay = fakeUpcomingInterviews; // Change to noUpcomingInterviews to test empty state
+
+  const maxInterviewsToShow = 2; // Number of interviews to show initially
+  const hasMoreInterviews = upcomingInterviewsToDisplay.length > maxInterviewsToShow;
+  const interviewsToShow = upcomingInterviewsToDisplay.slice(0, maxInterviewsToShow);
 
 
   return (
@@ -136,23 +197,43 @@ function loggedInUserDashboard(firstName: String) {
         </Card>
 
         <Card className="col-span-1 border rounded-lg shadow-sm">
-          <CardHeader>Recent Activity</CardHeader>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>Recent Activity</div>
+              <Button>Activity This Week</Button>
+            </div>
+          </CardHeader>
           <CardContent className="space-y-4">
             {activities.map((activity) => (
               // @ts-ignore
-              <RecentActivityLink jobtitle={activity.title} activityType={activity.type} time={activity.time} company={activity.company}></RecentActivityLink>
+              <RecentActivityLink jobtitle={activity.title} activityType={activity.type} time={activity.time} company={activity.company} key={activity.title + activity.time + activity.company}></RecentActivityLink>
             ))}
           </CardContent>
-
         </Card>
 
         {/* Interviews and Quick Actions */}
         <Card className="col-span-2 border rounded-lg shadow-sm">
           <CardHeader>
-            <CardTitle>Upcoming Interviews</CardTitle>
+            <CardTitle>{hasMoreInterviews ? (<div className="flex items-center justify-between">
+              <div>Upcoming Interviews</div>
+              <Button>All Up Coming Interviews</Button>
+            </div>) : (<div>Upcoming Interviews</div>)}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p>You have no upcoming interviews.</p>
+          <CardContent className="space-y-4">
+            {interviewsToShow.length > 0 ? (
+              <>
+                {interviewsToShow.map((interview) => (
+                  <DashboardUpcomingInterviewComponent jobtitle={interview.jobTitle} company={interview.company} date={interview.date} time={interview.time} type={interview.type} key={interview.company + interview.date + interview.time}></DashboardUpcomingInterviewComponent>
+                ))}
+
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
+                <CalendarDays className="h-12 w-12 mb-4 text-gray-400" />
+                <p className="text-lg font-medium">No upcoming interviews... yet!</p>
+                <p className="text-sm mt-2">Time to boost your applications!</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -160,10 +241,10 @@ function loggedInUserDashboard(firstName: String) {
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 flex flex-col">
-            {[
+          <CardContent className="space-y-4 flex flex-col pt-5">
+              {[
               { href: "/applications/new", text: "Add New Application" },
-              { href: "/resumes/upload", text: "View My Applications" },
+              { href: "/resumes/upload", text: "View My Applications" }, // Changed this to make more sense
               { href: "/experience/add", text: "Add Experience" },
             ].map((action) => (
               <ButtonStyledLink href={action.href} key={action.href}>{action.text}</ButtonStyledLink>
