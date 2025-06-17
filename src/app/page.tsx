@@ -5,6 +5,33 @@ import { Link } from "@/components/link";
 import ButtonStyledLink from "@/components/buttonstyledlink";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { JobBoardLogoDisplay } from "@/components/jobboardlogodisplay";
+import { JobBoards } from "@/components/jobboardlogodisplay";
+
+
+function getRandomPhrase(): string {
+  const phrases = [
+    "Let’s get that bread.",
+    "Job hunt mode: activated.",
+    "Another day, another application.",
+    "You're one click away from your next opportunity.",
+    "May the offers be ever in your favor.",
+    "Applying is a full-time job.",
+    "Keep calm and tailor your resume.",
+    "Rejection is redirection.",
+    "You're doing better than you think.",
+    "Stay sharp, stay hired.",
+    "Coffee. Resume. Apply. Repeat.",
+    "Your future employer is out there.",
+    "Hit send like you mean it.",
+    "The grind never looked this good.",
+    "Work smarter, apply faster.",
+    "Dream job loading..."
+  ];
+
+  return phrases[Math.floor(Math.random() * phrases.length)];
+}
+
 
 function unauthUserLandingPage() {
   return (
@@ -26,11 +53,32 @@ function unauthUserLandingPage() {
   );
 }
 
-function loggedInUserDashboard() {
+function loggedInUserDashboard(firstName: String) {
   return (
     <main className="p-6 space-y-6">
-      {/* Top Section: Interviews and Quick Actions */}
+      {/* Welcome Banner */}
       <section className="grid gap-6 lg:grid-cols-3">
+        <Card className="col-span-1 border rounded-lg shadow-sm">
+          <CardHeader>
+            <div>
+              Welcome back <strong>{firstName}</strong>!
+            </div>
+          </CardHeader>
+          <CardContent>{getRandomPhrase()}</CardContent>
+        </Card>
+        
+        <Card className="col-span-1 border rounded-lg shadow-sm">
+          <CardHeader>Job Boards</CardHeader>
+          <CardContent className="flex flex-row">
+            {(["linkedin","indeed","monster","glassdoor"] as JobBoards[] ).map((element) => (<JobBoardLogoDisplay jobBoardType={element} key={element}></JobBoardLogoDisplay>))}
+          </CardContent>
+        </Card>
+
+        <Card className="col-span-1 border rounded-lg shadow-sm">
+          <CardHeader>Job Boards</CardHeader>
+        </Card>
+        
+        {/* Interviews and Quick Actions */}
         <Card className="col-span-2 border rounded-lg shadow-sm">
           <CardHeader>
             <CardTitle>Upcoming Interviews</CardTitle>
@@ -47,17 +95,15 @@ function loggedInUserDashboard() {
           <CardContent className="space-y-4 flex flex-col">
             {[
               { href: "/applications/new", text: "Add New Application" },
-              { href: "/resumes/upload", text: "Upload New Resume" },
+              { href: "/resumes/upload", text: "View My Applications" },
               { href: "/experience/add", text: "Add Experience" },
             ].map((action) => (
               <ButtonStyledLink href={action.href} key={action.href}>{action.text}</ButtonStyledLink>
             ))}
           </CardContent>
         </Card>
-      </section>
-
-      {/* Search Applications */}
-      <Card className="border rounded-lg shadow-sm">
+        {/* Search Applications */}
+      <Card className="border rounded-lg shadow-sm col-span-3">
         <CardHeader>
           <CardTitle>Search Applications</CardTitle>
         </CardHeader>
@@ -69,14 +115,14 @@ function loggedInUserDashboard() {
               className="h-10"
             />
             <Button className="ml-4 h-10 w-10">
-              <svg className="w-100 h-100" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+              <svg className="w-100 h-100" fill="none" height="24" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
             </Button>
           </div>
         </CardContent>
       </Card>
 
       {/* Recent Resumes */}
-      <Card className="border rounded-lg shadow-sm">
+      <Card className="border rounded-lg shadow-sm col-span-1">
         <CardHeader>
           <CardTitle>Recent Resumes</CardTitle>
         </CardHeader>
@@ -89,7 +135,7 @@ function loggedInUserDashboard() {
       </Card>
 
       {/* Insights & Analytics */}
-      <Card className="border rounded-lg shadow-sm">
+      <Card className="border rounded-lg shadow-sm col-span-2">
         <CardHeader>
           <CardTitle>Insights & Analytics</CardTitle>
         </CardHeader>
@@ -99,6 +145,7 @@ function loggedInUserDashboard() {
           <p>5 applications waiting for response</p>
         </CardContent>
       </Card>
+      </section>
     </main>
   );
 }
@@ -111,5 +158,5 @@ export default async function LandingPage() {
   const currentUser = await getLoggedInUser(session);
   const isLoggedIn = currentUser !== null;
 
-  return isLoggedIn ? loggedInUserDashboard() : unauthUserLandingPage();
+  return isLoggedIn ? loggedInUserDashboard(currentUser.firstname) : unauthUserLandingPage();
 }
