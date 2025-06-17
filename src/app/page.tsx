@@ -69,7 +69,7 @@ function loggedInUserDashboard(firstName: String) {
         
         <Card className="col-span-1 border rounded-lg shadow-sm">
           <CardHeader>Job Boards</CardHeader>
-          <CardContent className="flex flex-row">
+          <CardContent className="flex flex-row justify-between">
             {(["linkedin","indeed","monster","glassdoor"] as JobBoards[] ).map((element) => (<JobBoardLogoDisplay jobBoardType={element} key={element}></JobBoardLogoDisplay>))}
           </CardContent>
         </Card>
