@@ -108,9 +108,9 @@ interface Interview {
   id: number;
   jobTitle: string;
   company: string;
-  date: string; 
-  time: string; 
-  type: string; 
+  date: string;
+  time: string;
+  type: string;
 }
 
 function loggedInUserDashboard(firstName: String) {
@@ -185,6 +185,38 @@ function loggedInUserDashboard(firstName: String) {
 
   return (
     <main className="p-6 space-y-6">
+      {/* Search Applications */}
+      <Card className="border rounded-lg shadow-sm col-span-3">
+        <CardHeader>
+          <CardTitle>Search Applications</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-column">
+            <Input
+              type="text"
+              placeholder="Search by company, position, or keyword"
+              className="h-10"
+            />
+            <Button className="ml-4 h-10 w-10">
+              <svg
+                className="w-100 h-100"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" x2="16.65" y1="21" y2="16.65" />
+              </svg>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
       {/* Welcome Banner */}
       <section className="grid gap-6 lg:grid-cols-3">
         <Card className="col-span-1 border rounded-lg shadow-sm">
@@ -200,6 +232,65 @@ function loggedInUserDashboard(firstName: String) {
             </div>
           </CardContent>
         </Card>
+
+        {/* Quick Actions */}
+        <Card className="border rounded-lg shadow-sm">
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 flex flex-col pt-5">
+            {[
+              { href: "/applications/new", text: "Add New Application" },
+              { href: "/resumes/upload", text: "View My Applications" }, // Changed this to make more sense
+              { href: "/experience/add", text: "Add Experience" },
+            ].map((action) => (
+              <ButtonStyledLink href={action.href} key={action.href}>
+                {action.text}
+              </ButtonStyledLink>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Upcoming Interviews */}
+        <Card className="col-span-1 border rounded-lg shadow-sm">
+          <CardHeader>
+            <CardTitle>
+              {hasMoreInterviews ? (
+                <div className="flex items-center justify-between">
+                  <div>Upcoming Interviews</div>
+                  <Button>All Up Coming Interviews</Button>
+                </div>
+              ) : (
+                <div>Upcoming Interviews</div>
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {interviewsToShow.length > 0 ? (
+              <>
+                {interviewsToShow.map((interview) => (
+                  <DashboardUpcomingInterviewComponent
+                    jobtitle={interview.jobTitle}
+                    company={interview.company}
+                    date={interview.date}
+                    time={interview.time}
+                    type={interview.type}
+                    key={interview.company + interview.date + interview.time}
+                  ></DashboardUpcomingInterviewComponent>
+                ))}
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
+                <CalendarDays className="h-12 w-12 mb-4 text-gray-400" />
+                <p className="text-lg font-medium">
+                  No upcoming interviews... yet!
+                </p>
+                <p className="text-sm mt-2">Time to boost your applications!</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
 
         <Card className="col-span-1 border rounded-lg shadow-sm">
           <CardHeader>Job Boards</CardHeader>
@@ -249,112 +340,16 @@ function loggedInUserDashboard(firstName: String) {
           </CardContent>
         </Card>
 
-        {/* Interviews and Quick Actions */}
-        <Card className="col-span-2 border rounded-lg shadow-sm">
-          <CardHeader>
-            <CardTitle>
-              {hasMoreInterviews ? (
-                <div className="flex items-center justify-between">
-                  <div>Upcoming Interviews</div>
-                  <Button>All Up Coming Interviews</Button>
-                </div>
-              ) : (
-                <div>Upcoming Interviews</div>
-              )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {interviewsToShow.length > 0 ? (
-              <>
-                {interviewsToShow.map((interview) => (
-                  <DashboardUpcomingInterviewComponent
-                    jobtitle={interview.jobTitle}
-                    company={interview.company}
-                    date={interview.date}
-                    time={interview.time}
-                    type={interview.type}
-                    key={interview.company + interview.date + interview.time}
-                  ></DashboardUpcomingInterviewComponent>
-                ))}
-              </>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
-                <CalendarDays className="h-12 w-12 mb-4 text-gray-400" />
-                <p className="text-lg font-medium">
-                  No upcoming interviews... yet!
-                </p>
-                <p className="text-sm mt-2">Time to boost your applications!</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="border rounded-lg shadow-sm">
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 flex flex-col pt-5">
-            {[
-              { href: "/applications/new", text: "Add New Application" },
-              { href: "/resumes/upload", text: "View My Applications" }, // Changed this to make more sense
-              { href: "/experience/add", text: "Add Experience" },
-            ].map((action) => (
-              <ButtonStyledLink href={action.href} key={action.href}>
-                {action.text}
-              </ButtonStyledLink>
-            ))}
-          </CardContent>
-        </Card>
-        {/* Search Applications */}
-        <Card className="border rounded-lg shadow-sm col-span-3">
-          <CardHeader>
-            <CardTitle>Search Applications</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-column">
-              <Input
-                type="text"
-                placeholder="Search by company, position, or keyword"
-                className="h-10"
-              />
-              <Button className="ml-4 h-10 w-10">
-                <svg
-                  className="w-100 h-100"
-                  fill="none"
-                  height="24"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="11" cy="11" r="8" />
-                  <line x1="21" x2="16.65" y1="21" y2="16.65" />
-                </svg>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Recent Resumes */}
-        <Card className="border rounded-lg shadow-sm col-span-1">
-          <CardHeader>
-            <CardTitle>Recent Resumes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>resume_v3.pdf - Uploaded 2 days ago</li>
-              <li>resume_startup_focused.pdf - Uploaded last week</li>
-            </ul>
-          </CardContent>
-        </Card>
 
         {/* Insights & Analytics */}
-        <Card className="border rounded-lg shadow-sm col-span-2">
+        <Card className="border rounded-lg shadow-sm col-span-1">
           <CardHeader>
-            <CardTitle>Insights & Analytics</CardTitle>
+            <CardTitle>
+              <div className="flex items-center justify-between">
+                  <div>Insights & Analytics</div>
+                  <Button>View All Analytics</Button>
+                </div>
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-1">
             <p>You have applied to 14 jobs this month.</p>
