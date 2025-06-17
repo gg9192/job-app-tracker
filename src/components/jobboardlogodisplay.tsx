@@ -1,5 +1,5 @@
 import { useId } from "react";
-
+import { palette } from "@/lib/theme/colors";
 
 export type JobBoards = "linkedin" | "indeed" | "monster" | "glassdoor";
 
@@ -16,7 +16,8 @@ export function JobBoardLogoDisplay({
             xmlns: "http://www.w3.org/2000/svg",
             width: size,
             height: size,
-            fill: "white",
+            fill: "currentColor",
+            className: `transition ${palette.linkHover}`
         };
 
         const maskId = useId(); // <- Unique per render
@@ -33,7 +34,7 @@ export function JobBoardLogoDisplay({
                 );
             case "monster":
                 return (
-                    <svg {...commonProps} viewBox="21.7 21.7 116.6 116.6"><defs><mask id="cutoutMask"><rect width="160" height="160" fill="white"></rect><path d="M104.3,55.7l-24.3,22.7L55.7,55.7v48.6h11v-23.5l13.3,11.8l13.3-11.8v23.5h11V55.7z" fill="black"></path></mask></defs><circle cx="80" cy="80" r="58.3" fill="white" mask="url(#cutoutMask)"></circle></svg>
+                    <svg {...commonProps} viewBox="21.7 21.7 116.6 116.6"><defs><mask id="cutoutMask"><rect width="160" height="160" ></rect><path d="M104.3,55.7l-24.3,22.7L55.7,55.7v48.6h11v-23.5l13.3,11.8l13.3-11.8v23.5h11V55.7z" fill="black"></path></mask></defs><circle cx="80" cy="80" r="58.3" mask="url(#cutoutMask)"></circle></svg>
                 );
             case "glassdoor":
                 return (
