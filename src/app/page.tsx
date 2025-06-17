@@ -7,48 +7,69 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { JobBoardLogoDisplay } from "@/components/jobboardlogodisplay";
 import { JobBoards } from "@/components/jobboardlogodisplay";
-import { Badge } from "@/components/ui/badge";
+import { RecentActivityLink } from "@/components/recentactivitylink";
 
 
 function getRandomPhrase(): string {
   const phrases = [
-    "Let’s get that bread.",
-    "Job hunt mode: activated.",
-    "Another day, another application.",
-    "You're one click away from your next opportunity.",
-    "May the offers be ever in your favor.",
-    "Applying is a full-time job.",
-    "Keep calm and tailor your resume.",
-    "Rejection is redirection.",
-    "You're doing better than you think.",
-    "Stay sharp, stay hired.",
-    "Coffee. Resume. Apply. Repeat.",
-    "Your future employer is out there.",
-    "Hit send like you mean it.",
-    "The grind never looked this good.",
-    "Work smarter, apply faster.",
+    "Let’s get that bread!",
+    "Job hunt mode: activated!",
+    "Another day, another application!",
+    "You're one click away from your next opportunity!",
+    "May the offers be ever in your favor!",
+    "Applying is a full-time job!",
+    "Keep calm and tailor your resume!",
+    "Rejection is redirection!",
+    "You're doing better than you think!",
+    "Stay sharp, stay hired!",
+    "Coffee. Resume. Apply. Repeat!",
+    "Your future employer is out there!",
+    "Hit send like you mean it!",
+    "The grind never looked this good!",
+    "Work smarter, apply faster!",
     "Dream job loading..."
   ];
 
   return phrases[Math.floor(Math.random() * phrases.length)];
 }
 
-function getRandomJobHuntCompliment(): string {
-  const compliments = [
-    "You're making great strides in your job search!",
-    "Your persistence is really paying off!",
-    "Each step you're taking is getting you closer!",
-    "You're handling this job hunt like a pro!",
-    "Impressive momentum, keep it going!",
-    "You're doing all the right things. It's only a matter of time!",
-    "Your preparation and effort are showing!",
-    "The way you’re tackling your job search is inspiring!"
+function getRandomJobSearchTip(): string {
+  const tips: string[] = [
+    "Customize your LinkedIn headline to reflect your target role, not just your current job.",
+    "Use metrics and outcomes in your resume (e.g., 'Increased sales by 35% in 6 months').",
+    "Create a personal website or portfolio to showcase your work—especially in creative or technical fields.",
+    "Informational interviews can be more valuable than job applications. Reach out to people in roles you admire.",
+    "Google yourself and clean up your digital footprint—employers often search your name.",
+    "Write a short elevator pitch about yourself and rehearse it for networking events.",
+    "Set up a job search routine with specific daily or weekly goals to maintain momentum.",
+    "Use advanced search filters on LinkedIn and job boards to uncover hidden opportunities.",
+    "Research company culture on sites like Glassdoor before applying or interviewing.",
+    "Attend industry meetups, webinars, or virtual conferences to make connections.",
+    "Track your applications with a spreadsheet or tool to avoid duplicate submissions or missed follow-ups.",
+    "Highlight transferable skills when switching industries or roles—frame them in the employer's language.",
+    "Use your email signature to link to your resume or LinkedIn profile when networking.",
+    "Volunteer for projects or nonprofits to fill employment gaps and expand your network.",
+    "Ask mentors or colleagues for constructive feedback on your resume and interview style.",
+    "Create a job-specific resume bank for different industries or roles you’re targeting.",
+    "Follow companies you're interested in on social media to stay updated on their openings.",
+    "Learn basic ATS (Applicant Tracking System) formatting rules to ensure your resume gets seen.",
+    "If you’re stuck, try reverse-engineering job descriptions—what skills keep appearing?",
+    "Keep a brag file—document accomplishments as they happen to reference them later.",
+    "Start a blog or write on LinkedIn about topics relevant to your field to demonstrate thought leadership.",
+    "Record yourself answering interview questions to identify areas for improvement.",
+    "Send speculative applications—even if no job is posted—especially at startups or small companies.",
+    "Revisit and refine your resume every few weeks, even while you're applying.",
+    "Turn rejections into insight: ask for feedback whenever possible.",
+    "Make sure your resume filename includes your name and the word 'resume' for clarity (e.g., 'John_Doe_Resume.pdf').",
+    "Use action verbs in your resume (e.g., Led, Developed, Implemented) to make your achievements stand out.",
+    "Don’t rely only on big job boards—check niche sites relevant to your industry.",
+    "Schedule your job searching and breaks to avoid burnout.",
+    "Prepare stories using the STAR method (Situation, Task, Action, Result) for behavioral interview questions."
   ];
-  const index = Math.floor(Math.random() * compliments.length);
-  return compliments[index];
+
+  const randomIndex = Math.floor(Math.random() * tips.length);
+  return tips[randomIndex];
 }
-
-
 
 function unauthUserLandingPage() {
   return (
@@ -77,16 +98,14 @@ function loggedInUserDashboard(firstName: String) {
       id: 1,
       company: "TechCorp",
       title: "Frontend Developer",
-      type: "Application Submitted",
+      type: "applied",
       time: "2 hours ago",
     },
     {
-      id: 2,
       company: "Innova Inc.",
       title: "UI/UX Designer",
-      type: "Interview Scheduled",
+      type: "interview",
       time: "Yesterday",
-      logo: "https://logo.clearbit.com/innovainc.com",
     },
   ];
 
@@ -101,12 +120,17 @@ function loggedInUserDashboard(firstName: String) {
               Welcome back <strong>{firstName}</strong>!
             </div>
           </CardHeader>
-          <CardContent>{getRandomPhrase()}</CardContent>
+          <CardContent>
+            <h1>{getRandomPhrase()}</h1>
+            <div className="mt-4 text-sm text-muted-foreground">
+              Tip of the day: {getRandomJobSearchTip()}
+            </div>
+          </CardContent>
         </Card>
 
         <Card className="col-span-1 border rounded-lg shadow-sm">
           <CardHeader>Job Boards</CardHeader>
-          <CardContent className="flex flex-row justify-between">
+          <CardContent className="flex flex-row justify-between items-center">
             {(["linkedin", "indeed", "monster", "glassdoor"] as JobBoards[]).map((element) => (<JobBoardLogoDisplay jobBoardType={element} key={element}></JobBoardLogoDisplay>))}
           </CardContent>
         </Card>
@@ -115,20 +139,11 @@ function loggedInUserDashboard(firstName: String) {
           <CardHeader>Recent Activity</CardHeader>
           <CardContent className="space-y-4">
             {activities.map((activity) => (
-              <div key={activity.id} className="flex items-center gap-4">
-                
-                <div className="flex-1">
-                  <div className="font-medium">{activity.title}</div>
-                  <div className="text-sm text-muted-foreground">{activity.company}</div>
-                </div>
-                <div className="text-right">
-                  <Badge variant="secondary">{activity.type}</Badge>
-                  <div className="text-xs text-muted-foreground">{activity.time}</div>
-                </div>
-              </div>
+              // @ts-ignore
+              <RecentActivityLink jobtitle={activity.title} activityType={activity.type} time={activity.time} company={activity.company}></RecentActivityLink>
             ))}
           </CardContent>
-          
+
         </Card>
 
         {/* Interviews and Quick Actions */}
