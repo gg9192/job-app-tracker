@@ -1,6 +1,12 @@
 import { getLoggedInUser } from "@/services/userService";
 import { cookies } from "next/headers";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Link } from "@/components/link";
 import ButtonStyledLink from "@/components/buttonstyledlink";
 import { Input } from "@/components/ui/input";
@@ -8,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { JobBoardLogoDisplay } from "@/components/jobboardlogodisplay";
 import { JobBoards } from "@/components/jobboardlogodisplay";
 import { RecentActivityLink } from "@/components/recentactivitylink";
-import { CalendarDays } from 'lucide-react'; // Example icons, you might need to install 'lucide-react'
+import { CalendarDays } from "lucide-react"; // Example icons, you might need to install 'lucide-react'
 import { DashboardUpcomingInterviewComponent } from "@/components/dashboardupcominginterview";
 
 // --- Existing Functions (Copy-pasted for completeness, no changes here) ---
@@ -29,7 +35,7 @@ function getRandomPhrase(): string {
     "Hit send like you mean it!",
     "The grind never looked this good!",
     "Work smarter, apply faster!",
-    "Dream job loading..."
+    "Dream job loading...",
   ];
 
   return phrases[Math.floor(Math.random() * phrases.length)];
@@ -66,7 +72,7 @@ function getRandomJobSearchTip(): string {
     "Use action verbs in your resume (e.g., Led, Developed, Implemented) to make your achievements stand out.",
     "Don’t rely only on big job boards—check niche sites relevant to your industry.",
     "Schedule your job searching and breaks to avoid burnout.",
-    "Prepare stories using the STAR method (Situation, Task, Action, Result) for behavioral interview questions."
+    "Prepare stories using the STAR method (Situation, Task, Action, Result) for behavioral interview questions.",
   ];
 
   const randomIndex = Math.floor(Math.random() * tips.length);
@@ -85,8 +91,12 @@ function unauthUserLandingPage() {
           and offer: beautifully and efficiently.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-evenly gap-4">
-          <Link href="/sign-up" size="xl">Get Started</Link>
-          <Link href="/login" size="xl">Login</Link>
+          <Link href="/sign-up" size="xl">
+            Get Started
+          </Link>
+          <Link href="/login" size="xl">
+            Login
+          </Link>
         </div>
       </section>
     </main>
@@ -98,13 +108,12 @@ interface Interview {
   id: number;
   jobTitle: string;
   company: string;
-  date: string; // e.g., "June 25th"
-  time: string; // e.g., "2:00 PM EST"
-  type: string; // e.g., "Video Call (Zoom)", "On-site"
+  date: string; 
+  time: string; 
+  type: string; 
 }
 
 function loggedInUserDashboard(firstName: String) {
-
   const activities = [
     {
       id: 1,
@@ -167,9 +176,12 @@ function loggedInUserDashboard(firstName: String) {
   const upcomingInterviewsToDisplay = fakeUpcomingInterviews; // Change to noUpcomingInterviews to test empty state
 
   const maxInterviewsToShow = 2; // Number of interviews to show initially
-  const hasMoreInterviews = upcomingInterviewsToDisplay.length > maxInterviewsToShow;
-  const interviewsToShow = upcomingInterviewsToDisplay.slice(0, maxInterviewsToShow);
-
+  const hasMoreInterviews =
+    upcomingInterviewsToDisplay.length > maxInterviewsToShow;
+  const interviewsToShow = upcomingInterviewsToDisplay.slice(
+    0,
+    maxInterviewsToShow,
+  );
 
   return (
     <main className="p-6 space-y-6">
@@ -192,7 +204,14 @@ function loggedInUserDashboard(firstName: String) {
         <Card className="col-span-1 border rounded-lg shadow-sm">
           <CardHeader>Job Boards</CardHeader>
           <CardContent className="flex flex-row justify-between items-center">
-            {(["linkedin", "indeed", "monster", "glassdoor"] as JobBoards[]).map((element) => (<JobBoardLogoDisplay jobBoardType={element} key={element}></JobBoardLogoDisplay>))}
+            {(
+              ["linkedin", "indeed", "monster", "glassdoor"] as JobBoards[]
+            ).map((element) => (
+              <JobBoardLogoDisplay
+                jobBoardType={element}
+                key={element}
+              ></JobBoardLogoDisplay>
+            ))}
           </CardContent>
         </Card>
 
@@ -200,37 +219,70 @@ function loggedInUserDashboard(firstName: String) {
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>Recent Activity</div>
-              <Button>Activity This Week</Button>
+              {activities.length > 0 && <Button>Activity This Week</Button>}
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {activities.map((activity) => (
-              // @ts-ignore
-              <RecentActivityLink jobtitle={activity.title} activityType={activity.type} time={activity.time} company={activity.company} key={activity.title + activity.time + activity.company}></RecentActivityLink>
-            ))}
+            {activities.length > 0 ? (
+              activities.map((activity) => (
+                // @ts-ignore
+                <RecentActivityLink
+                  jobtitle={activity.title}
+                  activityType={activity.type}
+                  time={activity.time}
+                  company={activity.company}
+                  key={activity.title + activity.time + activity.company}
+                />
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center text-muted-foreground">
+                <CalendarDays className="h-7 w-7 mb-4 text-gray-400" />
+                <p className="text-lg font-medium">
+                  No recent activity... yet!
+                </p>
+                <p className="text-sm mt-2">
+                  Submit applications or hear back from employers to see updates
+                  here.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
         {/* Interviews and Quick Actions */}
         <Card className="col-span-2 border rounded-lg shadow-sm">
           <CardHeader>
-            <CardTitle>{hasMoreInterviews ? (<div className="flex items-center justify-between">
-              <div>Upcoming Interviews</div>
-              <Button>All Up Coming Interviews</Button>
-            </div>) : (<div>Upcoming Interviews</div>)}</CardTitle>
+            <CardTitle>
+              {hasMoreInterviews ? (
+                <div className="flex items-center justify-between">
+                  <div>Upcoming Interviews</div>
+                  <Button>All Up Coming Interviews</Button>
+                </div>
+              ) : (
+                <div>Upcoming Interviews</div>
+              )}
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {interviewsToShow.length > 0 ? (
               <>
                 {interviewsToShow.map((interview) => (
-                  <DashboardUpcomingInterviewComponent jobtitle={interview.jobTitle} company={interview.company} date={interview.date} time={interview.time} type={interview.type} key={interview.company + interview.date + interview.time}></DashboardUpcomingInterviewComponent>
+                  <DashboardUpcomingInterviewComponent
+                    jobtitle={interview.jobTitle}
+                    company={interview.company}
+                    date={interview.date}
+                    time={interview.time}
+                    type={interview.type}
+                    key={interview.company + interview.date + interview.time}
+                  ></DashboardUpcomingInterviewComponent>
                 ))}
-
               </>
             ) : (
               <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
                 <CalendarDays className="h-12 w-12 mb-4 text-gray-400" />
-                <p className="text-lg font-medium">No upcoming interviews... yet!</p>
+                <p className="text-lg font-medium">
+                  No upcoming interviews... yet!
+                </p>
                 <p className="text-sm mt-2">Time to boost your applications!</p>
               </div>
             )}
@@ -242,12 +294,14 @@ function loggedInUserDashboard(firstName: String) {
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 flex flex-col pt-5">
-              {[
+            {[
               { href: "/applications/new", text: "Add New Application" },
               { href: "/resumes/upload", text: "View My Applications" }, // Changed this to make more sense
               { href: "/experience/add", text: "Add Experience" },
             ].map((action) => (
-              <ButtonStyledLink href={action.href} key={action.href}>{action.text}</ButtonStyledLink>
+              <ButtonStyledLink href={action.href} key={action.href}>
+                {action.text}
+              </ButtonStyledLink>
             ))}
           </CardContent>
         </Card>
@@ -264,7 +318,21 @@ function loggedInUserDashboard(firstName: String) {
                 className="h-10"
               />
               <Button className="ml-4 h-10 w-10">
-                <svg className="w-100 h-100" fill="none" height="24" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8" /><line x1="21" x2="16.65" y1="21" y2="16.65" /></svg>
+                <svg
+                  className="w-100 h-100"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" x2="16.65" y1="21" y2="16.65" />
+                </svg>
               </Button>
             </div>
           </CardContent>
@@ -299,7 +367,6 @@ function loggedInUserDashboard(firstName: String) {
   );
 }
 
-
 export default async function LandingPage() {
   const cookieStore = await cookies();
   const session = cookieStore.get("session")?.value;
@@ -307,5 +374,7 @@ export default async function LandingPage() {
   const currentUser = await getLoggedInUser(session);
   const isLoggedIn = currentUser !== null;
 
-  return isLoggedIn ? loggedInUserDashboard(currentUser.firstname) : unauthUserLandingPage();
+  return isLoggedIn
+    ? loggedInUserDashboard(currentUser.firstname)
+    : unauthUserLandingPage();
 }
