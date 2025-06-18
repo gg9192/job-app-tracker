@@ -3,7 +3,6 @@ import { cookies } from "next/headers";
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -14,8 +13,8 @@ import { Button } from "@/components/ui/button";
 import { JobBoardLogoDisplay } from "@/components/jobboardlogodisplay";
 import { JobBoards } from "@/components/jobboardlogodisplay";
 import { RecentActivityLink } from "@/components/recentactivitylink";
-import { CalendarDays } from "lucide-react"; // Example icons, you might need to install 'lucide-react'
-import { DashboardUpcomingInterviewComponent } from "@/components/dashboardupcominginterview";
+import { CalendarDays } from "lucide-react"; 
+import UpcomingInterviewsDashboardComponent from "@/components/dashboardupcominginterviews";
 
 // --- Existing Functions (Copy-pasted for completeness, no changes here) ---
 function getRandomPhrase(): string {
@@ -252,44 +251,7 @@ function loggedInUserDashboard(firstName: String) {
         </Card>
 
         {/* Upcoming Interviews */}
-        <Card className="col-span-1 border rounded-lg shadow-sm">
-          <CardHeader>
-            <CardTitle>
-              {hasMoreInterviews ? (
-                <div className="flex items-center justify-between">
-                  <div>Upcoming Interviews</div>
-                  <Button>All Up Coming Interviews</Button>
-                </div>
-              ) : (
-                <div>Upcoming Interviews</div>
-              )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {interviewsToShow.length > 0 ? (
-              <>
-                {interviewsToShow.map((interview) => (
-                  <DashboardUpcomingInterviewComponent
-                    jobtitle={interview.jobTitle}
-                    company={interview.company}
-                    date={interview.date}
-                    time={interview.time}
-                    type={interview.type}
-                    key={interview.company + interview.date + interview.time}
-                  ></DashboardUpcomingInterviewComponent>
-                ))}
-              </>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
-                <CalendarDays className="h-12 w-12 mb-4 text-gray-400" />
-                <p className="text-lg font-medium">
-                  No upcoming interviews... yet!
-                </p>
-                <p className="text-sm mt-2">Time to boost your applications!</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <UpcomingInterviewsDashboardComponent></UpcomingInterviewsDashboardComponent>
 
 
         <Card className="col-span-1 border rounded-lg shadow-sm">
