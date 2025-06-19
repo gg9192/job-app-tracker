@@ -14,4 +14,5 @@ export const palette = {
   warningBg: "bg-amber-300",
   dangerBg: "bg-red-500",
   dangerText: "text-red-500",
+  popoverBg: "bg-slate-500"
 };
