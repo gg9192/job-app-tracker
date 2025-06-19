@@ -12,9 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { JobBoardLogoDisplay } from "@/components/jobboardlogodisplay";
 import { JobBoards } from "@/components/jobboardlogodisplay";
-import { RecentActivityLink } from "@/components/recentactivitylink";
-import { CalendarDays } from "lucide-react"; 
 import UpcomingInterviewsDashboardComponent from "@/components/dashboardupcominginterviews";
+import { RecentActivityDashboardCard } from "@/components/RecentActivityDashboardCard";
 
 // --- Existing Functions (Copy-pasted for completeness, no changes here) ---
 function getRandomPhrase(): string {
@@ -102,7 +101,6 @@ function unauthUserLandingPage() {
   );
 }
 
-// --- New/Modified Code for Upcoming Interviews ---
 interface Interview {
   id: number;
   jobTitle: string;
@@ -113,74 +111,6 @@ interface Interview {
 }
 
 function loggedInUserDashboard(firstName: String) {
-  const activities = [
-    {
-      id: 1,
-      company: "TechCorp",
-      title: "Frontend Developer",
-      type: "applied",
-      time: "2 hours ago",
-    },
-    {
-      company: "Innova Inc.",
-      title: "UI/UX Designer",
-      type: "interview",
-      time: "Yesterday",
-    },
-  ];
-
-  const fakeUpcomingInterviews: Interview[] = [
-    {
-      id: 1,
-      jobTitle: "Senior Software Engineer",
-      company: "Innovate Solutions",
-      date: "Tomorrow, June 18th",
-      time: "10:00 AM PST",
-      type: "Video Call (Google Meet)",
-    },
-    {
-      id: 2,
-      jobTitle: "Product Manager",
-      company: "Global Tech",
-      date: "Friday, June 20th",
-      time: "3:30 PM EST",
-      type: "On-site Interview",
-    },
-    {
-      id: 3,
-      jobTitle: "Data Scientist",
-      company: "Quantify Labs",
-      date: "Monday, June 23rd",
-      time: "11:00 AM CST",
-      type: "Phone Screen",
-    },
-    {
-      id: 4,
-      jobTitle: "DevOps Engineer",
-      company: "CloudCore",
-      date: "Wednesday, June 25th",
-      time: "1:00 PM EST",
-      type: "Technical Interview (Zoom)",
-    },
-    {
-      id: 5,
-      jobTitle: "UX Researcher",
-      company: "UserFirst Design",
-      date: "Friday, June 27th",
-      time: "9:00 AM PST",
-      type: "Portfolio Review",
-    },
-  ];
-
-  const upcomingInterviewsToDisplay = fakeUpcomingInterviews; // Change to noUpcomingInterviews to test empty state
-
-  const maxInterviewsToShow = 2; // Number of interviews to show initially
-  const hasMoreInterviews =
-    upcomingInterviewsToDisplay.length > maxInterviewsToShow;
-  const interviewsToShow = upcomingInterviewsToDisplay.slice(
-    0,
-    maxInterviewsToShow,
-  );
 
   return (
     <main className="p-6 space-y-6">
@@ -253,7 +183,6 @@ function loggedInUserDashboard(firstName: String) {
         {/* Upcoming Interviews */}
         <UpcomingInterviewsDashboardComponent></UpcomingInterviewsDashboardComponent>
 
-
         <Card className="col-span-1 border rounded-lg shadow-sm">
           <CardHeader>Job Boards</CardHeader>
           <CardContent className="flex flex-row justify-between items-center">
@@ -268,40 +197,7 @@ function loggedInUserDashboard(firstName: String) {
           </CardContent>
         </Card>
 
-        <Card className="col-span-1 border rounded-lg shadow-sm">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>Recent Activity</div>
-              {activities.length > 0 && <Button>Activity This Week</Button>}
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {activities.length > 0 ? (
-              activities.map((activity) => (
-                // @ts-ignore
-                <RecentActivityLink
-                  jobtitle={activity.title}
-                  activityType={activity.type}
-                  time={activity.time}
-                  company={activity.company}
-                  key={activity.title + activity.time + activity.company}
-                />
-              ))
-            ) : (
-              <div className="flex flex-col items-center justify-center text-center text-muted-foreground">
-                <CalendarDays className="h-7 w-7 mb-4 text-gray-400" />
-                <p className="text-lg font-medium">
-                  No recent activity... yet!
-                </p>
-                <p className="text-sm mt-2">
-                  Submit applications or hear back from employers to see updates
-                  here.
-                </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
+        <RecentActivityDashboardCard></RecentActivityDashboardCard>
 
         {/* Insights & Analytics */}
         <Card className="border rounded-lg shadow-sm col-span-1">
