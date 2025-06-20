@@ -1,5 +1,5 @@
 import { CalendarDays } from "lucide-react";
-import { DashboardUpcomingInterviewComponent } from "./dashboardupcominginterview";
+import { DashboardUpcomingInterviewComponent } from "./dashboardupcominginterviewLineItem";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 
