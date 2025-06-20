@@ -1,11 +1,6 @@
 import { getLoggedInUser } from "@/services/userService";
 import { cookies } from "next/headers";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "@/components/link";
 import ButtonStyledLink from "@/components/buttonstyledlink";
 import { Input } from "@/components/ui/input";
@@ -80,7 +75,9 @@ function getRandomJobSearchTip(): string {
 
 function unauthUserLandingPage() {
   return (
-    <main className={`min-h-screen flex ${palette.lightText} items-center justify-center px-4`}>
+    <main
+      className={`min-h-screen flex ${palette.lightText} items-center justify-center px-4`}
+    >
       <section className="max-w-3xl text-center">
         <h1 className="text-5xl font-bold mb-6 leading-tight drop-shadow-md">
           Organize Your Job Hunt with Confidence
@@ -112,7 +109,6 @@ interface Interview {
 }
 
 function loggedInUserDashboard(firstName: String) {
-
   return (
     <main className="p-6 space-y-6">
       {/* Search Applications */}
@@ -182,9 +178,9 @@ function loggedInUserDashboard(firstName: String) {
           <CardHeader>
             <CardTitle>
               <div className="flex items-center justify-between">
-                  <div>Insights & Analytics</div>
-                  <Button>View All Analytics</Button>
-                </div>
+                <div>Insights & Analytics</div>
+                <Button>View All Analytics</Button>
+              </div>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-1">
