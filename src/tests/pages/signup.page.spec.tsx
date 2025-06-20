@@ -23,13 +23,10 @@ vi.mock('sonner', () => ({
   }
 }))
 
-describe.only("SignUpPage", () => {
-  // Declare push outside beforeEach so it can be accessed in multiple tests
+describe("SignUpPage", () => {
   let push;
 
   beforeEach(() => {
-    // Reset the mock implementation of useRouter before each test
-    // This ensures a clean state for each test where useRouter might be used.
     push = vi.fn();
     useRouter.mockReturnValue({
       push,

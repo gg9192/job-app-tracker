@@ -72,7 +72,7 @@ export function SearchApplicationComponent() {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
-                    <Command>
+                    <Command data-testid="command">
                         <CommandInput placeholder="Search tag..." />
                         <CommandList>
                             <CommandEmpty>No tag found.</CommandEmpty>
@@ -83,13 +83,13 @@ export function SearchApplicationComponent() {
                                         onSelect={(tag) => {
                                             if (selectedTags.includes(tag)) {
                                                 console.log('here')
-                                                setSelectedTags((oldState: string[]) => {
-                                                    const newState = oldState.filter((el) => (el !== tag))
+                                                setSelectedTags((oldState: any) => {
+                                                    const newState = oldState.filter((el: any) => (el !== tag))
                                                     return newState
                                                 })
                                             }
                                             else {
-                                                setSelectedTags((oldState: string[]) => {
+                                                setSelectedTags((oldState: any) => {
                                                     const newState = [...oldState, tag]
                                                     return newState
                                                 })
