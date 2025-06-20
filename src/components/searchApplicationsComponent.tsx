@@ -9,9 +9,20 @@ import {
 import { Badge } from "./ui/badge";
 import { useState } from "react";
 import { palette } from "@/lib/theme/colors";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command"
+import { CheckIcon } from "lucide-react";
+
 
 export function SearchApplicationComponent() {
-    const [selectedTags, setSelectedTags] = useState(["FAANG", "DEVOPS", "Full Stack", "Front End", "MLE"])
+    const [selectedTags, setSelectedTags] = useState([])
+    const [open, setOpen] = useState(false)
 
     const tags = ["FAANG", "DEVOPS", "Full Stack", "Front End", "MLE"]
 
@@ -39,29 +50,63 @@ export function SearchApplicationComponent() {
             </svg>
         </Button>
     </div>
-        <div className="mt-5 flex">
-            {selectedTags.map((tag) => (<Badge className="mr-3">{tag}
-                <button className={`${palette.linkHover} hover: cursor-pointer`}
-                onClick={() => {
-                    setSelectedTags((oldState) => {
-                        const newstate = oldState.filter((element) => (element !== tag))
-                        return newstate
-                    })
-                }}
-                
-                
-                
+        <div className="mt-5 flex flex-wrap gap-x-2 gap-y-3">
+            {selectedTags.map((tag) => (<Badge className="mr-3" key={tag}>{tag}
+                <button className={`${palette.linkHover} hover: cursor-pointer text-lg`}
+                    onClick={() => {
+                        setSelectedTags((oldState) => {
+                            const newstate = oldState.filter((element) => (element !== tag))
+                            return newstate
+                        })
+                    }}
                 >x</button>
-                </Badge>))}
-            <Popover>
-                <PopoverTrigger  asChild>
-                    <Button>Add Tag</Button>
+            </Badge>))}
+            <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                    <Button
+                        role="combobox"
+                        aria-expanded={open}
+                        className="justify-between"
+                    >
+                        Add a Tag
+                    </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-80">
-                    <h1 className="text-white">hello world</h1>
-                    <h1 className="text-white">hello world</h1>
-                    <h1 className="text-white">hello world</h1>
+                <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                        <CommandInput placeholder="Search tag..." />
+                        <CommandList>
+                            <CommandEmpty>No tag found.</CommandEmpty>
+                            <CommandGroup>
+                                {tags.map((tag) => (
+                                    <CommandItem
+                                        key={tag}
+                                        onSelect={(tag) => {
+                                            if (selectedTags.includes(tag)) {
+                                                console.log('here')
+                                                setSelectedTags((oldState: string[]) => {
+                                                    const newState = oldState.filter((el) => (el !== tag))
+                                                    return newState
+                                                })
+                                            }
+                                            else {
+                                                setSelectedTags((oldState: string[]) => {
+                                                    const newState = [...oldState, tag]
+                                                    return newState
+                                                })
+                                            }
+                                            setOpen(false)
+                                        }}
+                                        className="hover:cursor-pointer">
 
+                                        {tag}
+                                        {selectedTags.includes(tag) && (
+                                            <CheckIcon className={`h-4 w-4 text-muted-foreground ${palette.lightStroke}`} />
+                                        )}
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        </CommandList>
+                    </Command>
                 </PopoverContent>
             </Popover>
         </div>

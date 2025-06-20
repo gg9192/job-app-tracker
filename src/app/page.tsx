@@ -15,6 +15,7 @@ import { JobBoards } from "@/components/jobboardlogodisplay";
 import UpcomingInterviewsDashboardComponent from "@/components/dashboardupcominginterviews";
 import { RecentActivityDashboardCard } from "@/components/RecentActivityDashboardCard";
 import { SearchApplicationComponent } from "@/components/searchApplicationsComponent";
+import { palette } from "@/lib/theme/colors";
 
 function getRandomPhrase(): string {
   const phrases = [
@@ -79,12 +80,12 @@ function getRandomJobSearchTip(): string {
 
 function unauthUserLandingPage() {
   return (
-    <main className="min-h-screen text-white flex items-center justify-center px-4">
+    <main className={`min-h-screen flex ${palette.lightText} items-center justify-center px-4`}>
       <section className="max-w-3xl text-center">
         <h1 className="text-5xl font-bold mb-6 leading-tight drop-shadow-md">
           Organize Your Job Hunt with Confidence
         </h1>
-        <p className="text-lg mb-8 text-white/90 drop-shadow-sm">
+        <p className={`text-lg mb-8 drop-shadow-sm ${palette.lightText}`}>
           Our job tracker helps you stay on top of every application, interview,
           and offer: beautifully and efficiently.
         </p>
