@@ -13,6 +13,7 @@ export function SteppedForm({
   onSubmit,
   title,
   children,
+  footer,
 }: {
   steps: number;
   currentStep: number;
@@ -21,6 +22,7 @@ export function SteppedForm({
   onSubmit: () => void;
   title: string;
   children: React.ReactNode;
+  footer?: React.ReactNode;
 }) {
   const progressPercent = (currentStep / steps) * 100;
   const isLastStep = currentStep === steps - 1
@@ -37,20 +39,19 @@ export function SteppedForm({
             <AnimatePresence mode="wait">{children}</AnimatePresence>
           </div>
 
-          <div className="relative z-10 flex justify-between">
+          <div className="relative z-10 flex justify-between items-center">
             <Button onClick={onBack} type="button" disabled={currentStep === 0}>
               Back
             </Button>
-            {!isLastStep && (
+            {footer}
+            {!isLastStep ? (
               <Button onClick={onNext} type="button">
                 Next
               </Button>
-            )}
-            {isLastStep && (
-              <Button type="button" onClick={onSubmit} className="ml-auto">
-                Submit Application
-              </Button>
-            )}
+            ) : (<Button type="button" onClick={onSubmit}>
+              Submit
+            </Button>)}
+
           </div>
         </form>
       </Card>

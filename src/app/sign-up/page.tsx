@@ -12,10 +12,9 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Link } from "@/components/link";
-import { palette } from "@/lib/theme/colors";
 import FormField from "@/components/formfield";
 
-export const clientUserSchema = userSchema
+const clientUserSchema = userSchema
   .extend({
     confirmPassword: z.string().min(1, "Confirm Password is required"),
   })
