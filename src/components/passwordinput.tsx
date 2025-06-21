@@ -5,11 +5,11 @@ import { Label } from "@/components/ui/label";
 import { palette } from "@/lib/theme/colors";
 
 export function PasswordInput(
-  props: React.ComponentProps<typeof Input> & { label: string; error?: string },
+  props: React.ComponentProps<typeof Input> & { label: string },
 ) {
   const [show, setShow] = useState(false);
   return (
-    <div>
+    <>
       <Label htmlFor={props.id} className="mb-1 block text-sm font-medium">
         {props.label}
       </Label>
@@ -56,9 +56,7 @@ export function PasswordInput(
           )}
         </button>
       </div>
-      {props.error && (
-        <p className={`mt-1 text-sm ${palette.dangerText}`}>{props.error}</p>
-      )}
-    </div>
+     
+    </>
   );
 }

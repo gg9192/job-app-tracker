@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Link } from "@/components/link";
 import { palette } from "@/lib/theme/colors";
+import FormField from "@/components/formfield";
 
 export const clientUserSchema = userSchema
   .extend({
@@ -67,70 +68,77 @@ export default function SignUpPage() {
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <Label
-              htmlFor="firstname"
-              className="mb-1 block text-sm font-medium"
+            <FormField
+              error={errors.firstname}
             >
-              First Name
-            </Label>
-            <Input
-              id="firstname"
-              placeholder="First name"
-              {...register("firstname")}
-            />
-            {errors.firstname && (
-              <p className={`text-sm ${palette.dangerText}`}>
-                {errors.firstname.message}
-              </p>
-            )}
+              <Label
+                htmlFor="firstname"
+                className="mb-1 block text-sm font-medium"
+              >
+                First Name
+              </Label>
+              <Input
+                id="firstname"
+                placeholder="First name"
+                {...register("firstname")}
+              />
+            </FormField>
           </div>
           <div>
-            <Label
-              htmlFor="lastname"
-              className="mb-1 block text-sm font-medium"
+            <FormField
+              error={errors.lastname}
             >
-              Last Name
-            </Label>
-            <Input
-              id="lastname"
-              placeholder="Last name"
-              {...register("lastname")}
-            />
-            {errors.lastname && (
-              <p className={`text-sm ${palette.dangerText}`}>
-                {errors.lastname.message}
-              </p>
-            )}
+              <Label
+                htmlFor="lastname"
+                className="mb-1 block text-sm font-medium"
+              >
+                Last Name
+              </Label>
+              <Input
+                id="lastname"
+                placeholder="Last name"
+                {...register("lastname")}
+              />
+
+            </FormField>
           </div>
           <div>
-            <Label htmlFor="email" className="mb-1 block text-sm font-medium">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="you@example.com"
-              {...register("email")}
-            />
-            {errors.email && (
-              <p className={`text-sm ${palette.dangerText}`}>
-                {errors.email.message}
-              </p>
-            )}
+            <FormField
+              error={errors.email}
+            >
+              <Label htmlFor="email" className="mb-1 block text-sm font-medium">
+                Email
+              </Label>
+              <Input
+                id="email"
+                placeholder="you@example.com"
+                {...register("email")}
+              />
+            </FormField>
           </div>
-          <PasswordInput
-            id="password"
-            label="Password"
-            placeholder="••••••••"
-            {...register("password")}
-            error={errors.password?.message}
-          />
-          <PasswordInput
-            id="confirmPassword"
-            label="Confirm Password"
-            placeholder="••••••••"
-            {...register("confirmPassword")}
-            error={errors.confirmPassword?.message}
-          />
+          <FormField
+            error={errors.password}
+          >
+            <PasswordInput
+              id="password"
+              label="Password"
+              placeholder="••••••••"
+              {...register("password")}
+            />
+          </FormField>
+          <FormField
+            error={errors.confirmPassword}
+          >
+
+            <PasswordInput
+              id="confirmPassword"
+              label="Confirm Password"
+              placeholder="••••••••"
+              {...register("confirmPassword")}
+            />
+          </FormField>
+
+
           <Button type="submit" className="w-full">
             Sign Up
           </Button>

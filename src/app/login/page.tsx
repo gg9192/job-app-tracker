@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { PasswordInput } from "@/components/passwordinput";
 import { toast } from "sonner";
 import { Link } from "@/components/link";
+import FormField from "@/components/formfield";
 
 const schema = z.object({
   email: z.string().email(),
@@ -62,25 +63,29 @@ export default function LoginPage() {
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <Label htmlFor="email" className="mb-1 block text-sm font-medium">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="you@example.com"
-              {...register("email")}
-            />
-            {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
-            )}
+            <FormField
+              error={errors.email}
+            >
+              <Label htmlFor="email" className="mb-1 block text-sm font-medium">
+                Email
+              </Label>
+              <Input
+                id="email"
+                placeholder="you@example.com"
+                {...register("email")}
+              /></FormField>
           </div>
-          <PasswordInput
-            id="password"
-            label="Password"
-            placeholder="••••••••"
-            {...register("password")}
-            error={errors.password?.message}
-          />
+          <FormField
+          error={errors.password}
+          >
+            <PasswordInput
+              id="password"
+              label="Password"
+              placeholder="••••••••"
+              {...register("password")}
+            />
+          </FormField>
+
           <Button type="submit" className="w-full">
             Sign In
           </Button>
