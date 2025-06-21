@@ -1,0 +1,7 @@
+# Ignore artifacts:
+build
+coverage
+prisma
+src/tests/*
+vitest.config.ts
+.github/pull_request_template.md
