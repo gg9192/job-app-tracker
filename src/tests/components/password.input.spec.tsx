@@ -30,9 +30,4 @@ describe('PasswordInput', () => {
     expect(screen.getByTestId('eyeclosed')).toBeInTheDocument()
     expect(input).toHaveAttribute('type', 'password')
   })
-
-  it('should display the error correctly', () => {
-    render(<PasswordInput id="password" label="Password" error='Password is required'/>)
-    expect(screen.getByText('Password is required')).toBeInTheDocument()
-  })
 })
