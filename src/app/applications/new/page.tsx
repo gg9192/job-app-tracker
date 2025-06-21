@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,42 +19,7 @@ import { SteppedForm } from "@/components/steppedForm";
 import CompensationInputBox from "@/components/compensationInputBox";
 import FormField from "@/components/formfield";
 
-const statusEnum = z.enum(["APPLIED", "INTERVIEWING", "OFFER", "REJECTED", "WITHDRAWN"]);
-
-const compTypeEnum = z.enum(["hourly", "yearly"]);
-
-const schema = z.object({
-  jobdescription: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  status: statusEnum.optional(),
-  compensation: z.string().optional(),
-  compType: compTypeEnum.optional(),
-  resume: z.custom<File>().optional(),
-}).superRefine((data, ctx) => {
-  if (!data.jobdescription || data.jobdescription.trim() === "") {
-    ctx.addIssue({ path: ["jobdescription"], message: "Job description is required", code: "custom" });
-  }
-  if (!data.city || data.city.trim() === "") {
-    ctx.addIssue({ path: ["city"], message: "City is required", code: "custom" });
-  }
-  if (!data.state || data.state.trim() === "") {
-    ctx.addIssue({ path: ["state"], message: "State is required", code: "custom" });
-  }
-  if (!data.status || data.status.trim() === "") {
-    ctx.addIssue({ path: ["status"], message: "Status is required", code: "custom" });
-  }
-  if (data.compensation !== "" && data.compType === undefined) {
-    ctx.addIssue({ path: ["compensation"], message: "Please select a compensation type", code: "custom" });
-  }
-  const match = data.compensation?.match(/^\d+(\.\d{2})?$/);
-  const isValid = data.compensation === "" || match !== null
-  if (!isValid) {
-    ctx.addIssue({ path: ["compensation"], message: "Please enter a valid amount", code: "custom" });
-  }
-});
-
-type FormData = z.infer<typeof schema>;
+import { applicationSchema, FormData, statusEnum } from "@/lib/validators/application";
 
 export default function ApplicationFormPage() {
   const [step, setStep] = useState(0);
@@ -66,7 +30,7 @@ export default function ApplicationFormPage() {
     formState: { errors },
     control,
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(applicationSchema),
     mode: "all",
   });
 
