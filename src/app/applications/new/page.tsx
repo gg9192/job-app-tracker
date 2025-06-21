@@ -25,10 +25,16 @@ const schema = z.object({
   status: statusEnum,
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
-  hourlyrate: z.coerce.number().nonnegative("Hourly rate must be >= 0"),
-  yearlysalary: z.coerce.number().nonnegative("Yearly salary must be >= 0"),
-  resumeID: z.coerce.number().optional(),
+  compensation: z.coerce.number().min(0, "Compensation must be >= 0"),
+  resume: z
+    .custom<File>()
+    .optional()
+    .refine(
+      (file) => file === undefined || file instanceof File,
+      "Resume must be a file"
+    ),
 });
+
 
 type FormData = z.infer<typeof schema>;
 
@@ -51,13 +57,11 @@ export default function ApplicationFormPage() {
 
   const nextStep = async () => {
     let valid = false;
-    if (step === 0) valid = await trigger(["jobdescription", "status"]);
-    else if (step === 1) valid = await trigger(["city", "state"]);
-    else if (step === 2) valid = await trigger(["hourlyrate", "yearlysalary"]);
+    if (step === 0) valid = await trigger(["jobdescription"]);
+    else if (step === 1) valid = await trigger(["city", "state", "status", "compensation"]);
     if (valid) setStep((s) => s + 1);
   };
 
-  const canGoNext = true;
   const stepsCount = 3;
 
   return (
@@ -68,8 +72,6 @@ export default function ApplicationFormPage() {
         onBack={() => setStep((s) => Math.max(s - 1, 0))}
         onNext={nextStep}
         onSubmit={onSubmit}
-        canGoNext={canGoNext}
-        isLastStep={step === stepsCount - 1}
         title="New Job Application"
       >
         {step === 0 && (
@@ -84,31 +86,10 @@ export default function ApplicationFormPage() {
           >
             <div>
               <Label htmlFor="jobdescription">Job Description</Label>
-              <Textarea id="jobdescription" {...register("jobdescription")} />
+              <Textarea id="jobdescription" className="resize-none overflow-y-auto h-80 resize-none" {...register("jobdescription")} />
               {errors.jobdescription && <p className="text-sm text-red-500">{errors.jobdescription.message}</p>}
             </div>
-            <div>
-              <Label htmlFor="status">Status</Label>
-              <Controller
-                name="status"
-                control={control}
-                render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {statusEnum.options.map((option) => (
-                        <SelectItem key={option} value={option}>
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.status && <p className="text-sm text-red-500">{errors.status.message}</p>}
-            </div>
+            
           </motion.div>
         )}
 
@@ -132,6 +113,33 @@ export default function ApplicationFormPage() {
               <Input id="state" {...register("state")} />
               {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
             </div>
+            <div>
+              <Label htmlFor="status">Status</Label>
+              <Controller
+                name="status"
+                control={control}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {statusEnum.options.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.status && <p className="text-sm text-red-500">{errors.status.message}</p>}
+            </div>
+            <div>
+              <Label htmlFor="compensation">Compensation</Label>
+              <Input type="number" step="0.01" id="compensation" {...register("compensation")} />
+              {errors.compensation && <p className="text-sm text-red-500">{errors.compensation.message}</p>}
+            </div>
           </motion.div>
         )}
 
@@ -146,14 +154,7 @@ export default function ApplicationFormPage() {
             style={{ position: "absolute", inset: 0 }}
           >
             <div>
-              <Label htmlFor="hourlyrate">Hourly Rate</Label>
-              <Input type="number" step="0.01" id="hourlyrate" {...register("hourlyrate")} />
-              {errors.hourlyrate && <p className="text-sm text-red-500">{errors.hourlyrate.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="yearlysalary">Yearly Salary</Label>
-              <Input type="number" step="0.01" id="yearlysalary" {...register("yearlysalary")} />
-              {errors.yearlysalary && <p className="text-sm text-red-500">{errors.yearlysalary.message}</p>}
+              kfeigam
             </div>
           </motion.div>
         )}

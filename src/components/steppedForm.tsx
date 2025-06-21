@@ -32,7 +32,7 @@ export function SteppedForm({
 
         <Progress value={progressPercent} className="h-2 mb-6" />
 
-        <form className="space-y-5 relative overflow-hidden flex flex-col" style={{ minHeight: 300 }}>
+        <form className="space-y-5 relative overflow-hidden flex flex-col" style={{ minHeight: 400 }}>
           <div className="relative flex-grow">
             <AnimatePresence mode="wait">{children}</AnimatePresence>
           </div>
