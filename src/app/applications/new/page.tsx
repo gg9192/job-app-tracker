@@ -4,235 +4,164 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Link } from "@/components/link";
 import { Textarea } from "@/components/ui/textarea";
 import {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectItem,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
 } from "@/components/ui/select";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { Link } from "@/components/link";
+import { SteppedForm } from "@/components/steppedForm";
 
-const statusEnum = z.enum([
-    "APPLIED",
-    "INTERVIEWING",
-    "OFFER",
-    "REJECTED",
-    "WITHDRAWN",
-]);
+const statusEnum = z.enum(["APPLIED", "INTERVIEWING", "OFFER", "REJECTED", "WITHDRAWN"]);
 
 const schema = z.object({
-    jobdescription: z.string().min(1, "Job description is required"),
-    status: statusEnum,
-    city: z.string().min(1, "City is required"),
-    state: z.string().min(1, "State is required"),
-    hourlyrate: z.coerce.number().nonnegative("Hourly rate must be >= 0"),
-    yearlysalary: z.coerce.number().nonnegative("Yearly salary must be >= 0"),
-    resumeID: z.coerce.number().optional(),
+  jobdescription: z.string().min(1, "Job description is required"),
+  status: statusEnum,
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
+  hourlyrate: z.coerce.number().nonnegative("Hourly rate must be >= 0"),
+  yearlysalary: z.coerce.number().nonnegative("Yearly salary must be >= 0"),
+  resumeID: z.coerce.number().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
 
 export default function ApplicationFormPage() {
-    const [step, setStep] = useState(0);
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        trigger,
-        control,
-    } = useForm<FormData>({
-        resolver: zodResolver(schema),
-        mode: "all",
-    });
+  const [step, setStep] = useState(0);
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    formState: { errors },
+    control,
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    mode: "all",
+  });
 
-    const onSubmit = async (data: FormData) => {
-        console.log(data);
-    };
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+  });
 
-    const nextStep = async () => {
-        let valid = false;
-        if (step === 0) {
-            valid = await trigger(["jobdescription", "status"]);
-        } else if (step === 1) {
-            valid = await trigger(["city", "state"]);
-        } else if (step === 2) {
-            valid = await trigger(["hourlyrate", "yearlysalary"]);
-        }
-        if (valid) setStep((s) => s + 1);
-    };
+  const nextStep = async () => {
+    let valid = false;
+    if (step === 0) valid = await trigger(["jobdescription", "status"]);
+    else if (step === 1) valid = await trigger(["city", "state"]);
+    else if (step === 2) valid = await trigger(["hourlyrate", "yearlysalary"]);
+    if (valid) setStep((s) => s + 1);
+  };
 
-    const prevStep = () => {
-        setStep((s) => Math.max(s - 1, 0));
-    };
+  const canGoNext = true;
+  const stepsCount = 3;
 
-    const progressPercent = ((step) / 3) * 100;
+  return (
+    <>
+      <SteppedForm
+        steps={stepsCount}
+        currentStep={step}
+        onBack={() => setStep((s) => Math.max(s - 1, 0))}
+        onNext={nextStep}
+        onSubmit={onSubmit}
+        canGoNext={canGoNext}
+        isLastStep={step === stepsCount - 1}
+        title="New Job Application"
+      >
+        {step === 0 && (
+          <motion.div
+            key="step-0"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-5 w-full"
+            style={{ position: "absolute", inset: 0 }}
+          >
+            <div>
+              <Label htmlFor="jobdescription">Job Description</Label>
+              <Textarea id="jobdescription" {...register("jobdescription")} />
+              {errors.jobdescription && <p className="text-sm text-red-500">{errors.jobdescription.message}</p>}
+            </div>
+            <div>
+              <Label htmlFor="status">Status</Label>
+              <Controller
+                name="status"
+                control={control}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {statusEnum.options.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.status && <p className="text-sm text-red-500">{errors.status.message}</p>}
+            </div>
+          </motion.div>
+        )}
 
-    return (
-        <div className="flex min-h-screen items-center justify-center px-4">
-            <Card className="w-full max-w-md p-8 shadow-lg">
-                <h1 className="mb-6 text-center text-2xl font-semibold">
-                    New Job Application
-                </h1>
+        {step === 1 && (
+          <motion.div
+            key="step-1"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-5 w-full"
+            style={{ position: "absolute", inset: 0 }}
+          >
+            <div>
+              <Label htmlFor="city">City</Label>
+              <Input id="city" {...register("city")} />
+              {errors.city && <p className="text-sm text-red-500">{errors.city.message}</p>}
+            </div>
+            <div>
+              <Label htmlFor="state">State</Label>
+              <Input id="state" {...register("state")} />
+              {errors.state && <p className="text-sm text-red-500">{errors.state.message}</p>}
+            </div>
+          </motion.div>
+        )}
 
-                <Progress value={progressPercent} className="h-2 mb-6" />
+        {step === 2 && (
+          <motion.div
+            key="step-2"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-5 w-full"
+            style={{ position: "absolute", inset: 0 }}
+          >
+            <div>
+              <Label htmlFor="hourlyrate">Hourly Rate</Label>
+              <Input type="number" step="0.01" id="hourlyrate" {...register("hourlyrate")} />
+              {errors.hourlyrate && <p className="text-sm text-red-500">{errors.hourlyrate.message}</p>}
+            </div>
+            <div>
+              <Label htmlFor="yearlysalary">Yearly Salary</Label>
+              <Input type="number" step="0.01" id="yearlysalary" {...register("yearlysalary")} />
+              {errors.yearlysalary && <p className="text-sm text-red-500">{errors.yearlysalary.message}</p>}
+            </div>
+          </motion.div>
+        )}
+      </SteppedForm>
 
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="space-y-5 relative overflow-hidden flex flex-col"
-                    style={{ minHeight: 300 }}
-                >
-                    <div className="relative flex-grow">
-                        <AnimatePresence mode="wait">
-                            {step === 0 && (
-                                <motion.div
-                                    key="step-0"
-                                    initial={{ opacity: 0, x: 40 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -40 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="space-y-5 w-full"
-                                    style={{ position: "absolute", inset: 0 }}
-                                >
-                                    <div>
-                                        <Label htmlFor="jobdescription">Job Description</Label>
-                                        <Textarea id="jobdescription" {...register("jobdescription")} />
-                                        {errors.jobdescription && (
-                                            <p className="text-sm text-red-500">
-                                                {errors.jobdescription.message}
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <Label htmlFor="status">Status</Label>
-                                        <Controller
-                                            name="status"
-                                            control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full">
-                                                        <SelectValue placeholder="Select status" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {statusEnum.options.map((option) => (
-                                                            <SelectItem key={option} value={option}>
-                                                                {option}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
-                                        />
-                                        {errors.status && (
-                                            <p className="text-sm text-red-500">
-                                                {errors.status.message}
-                                            </p>
-                                        )}
-                                    </div>
-                                </motion.div>
-                            )}
-
-                            {step === 1 && (
-                                <motion.div
-                                    key="step-1"
-                                    initial={{ opacity: 0, x: 40 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -40 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="space-y-5 w-full"
-                                    style={{ position: "absolute", inset: 0 }}
-                                >
-                                    <div>
-                                        <Label htmlFor="city">City</Label>
-                                        <Input id="city" {...register("city")} />
-                                        {errors.city && (
-                                            <p className="text-sm text-red-500">{errors.city.message}</p>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <Label htmlFor="state">State</Label>
-                                        <Input id="state" {...register("state")} />
-                                        {errors.state && (
-                                            <p className="text-sm text-red-500">{errors.state.message}</p>
-                                        )}
-                                    </div>
-                                </motion.div>
-                            )}
-
-                            {step === 2 && (
-                                <motion.div
-                                    key="step-2"
-                                    initial={{ opacity: 0, x: 40 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -40 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="space-y-5 w-full"
-                                    style={{ position: "absolute", inset: 0 }}
-                                >
-                                    <div>
-                                        <Label htmlFor="hourlyrate">Hourly Rate</Label>
-                                        <Input
-                                            id="hourlyrate"
-                                            type="number"
-                                            step="0.01"
-                                            {...register("hourlyrate")}
-                                        />
-                                        {errors.hourlyrate && (
-                                            <p className="text-sm text-red-500">
-                                                {errors.hourlyrate.message}
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <Label htmlFor="yearlysalary">Yearly Salary</Label>
-                                        <Input
-                                            id="yearlysalary"
-                                            type="number"
-                                            step="0.01"
-                                            {...register("yearlysalary")}
-                                        />
-                                        {errors.yearlysalary && (
-                                            <p className="text-sm text-red-500">
-                                                {errors.yearlysalary.message}
-                                            </p>
-                                        )}
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-
-                    <div className="relative z-10 flex justify-between">
-                        <Button onClick={prevStep} type="button" disabled={step === 0}>
-                            Back
-                        </Button>
-                        {step < 2 && (
-                            <Button onClick={nextStep} type="button">
-                                Next
-                            </Button>
-                        )}
-                        {step === 2 && (
-                            <Button type="submit" className="ml-auto">
-                                Submit Application
-                            </Button>
-                        )}
-                    </div>
-                </form>
-
-                <p className="mt-6 text-center text-sm">
-                    <Link href="/">Go back to dashboard</Link>
-                </p>
-            </Card>
-        </div>
-    );
+      <p className="mt-6 text-center text-sm">
+        <Link href="/">Go back to dashboard</Link>
+      </p>
+    </>
+  );
 }
