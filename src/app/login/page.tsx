@@ -63,9 +63,7 @@ export default function LoginPage() {
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <FormField
-              error={errors.email}
-            >
+            <FormField error={errors.email}>
               <Label htmlFor="email" className="mb-1 block text-sm font-medium">
                 Email
               </Label>
@@ -73,11 +71,10 @@ export default function LoginPage() {
                 id="email"
                 placeholder="you@example.com"
                 {...register("email")}
-              /></FormField>
+              />
+            </FormField>
           </div>
-          <FormField
-          error={errors.password}
-          >
+          <FormField error={errors.password}>
             <PasswordInput
               id="password"
               label="Password"

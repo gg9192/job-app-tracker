@@ -19,7 +19,11 @@ import { SteppedForm } from "@/components/steppedForm";
 import CompensationInputBox from "@/components/compensationInputBox";
 import FormField from "@/components/formfield";
 
-import { applicationSchema, FormData, statusEnum } from "@/lib/validators/application";
+import {
+  applicationSchema,
+  FormData,
+  statusEnum,
+} from "@/lib/validators/application";
 
 export default function ApplicationFormPage() {
   const [step, setStep] = useState(0);
@@ -35,11 +39,56 @@ export default function ApplicationFormPage() {
   });
 
   const stateAbbreviations = [
-    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
-    "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-    "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-    "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-    "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
   ];
 
   const onSubmit = handleSubmit((data) => {
@@ -49,8 +98,15 @@ export default function ApplicationFormPage() {
   const nextStep = async () => {
     let valid = false;
     if (step === 0) valid = await trigger(["jobdescription"]);
-    else if (step === 1) valid = await trigger(["city", "state", "status", "compensation", "compType"]);
-    else valid = true
+    else if (step === 1)
+      valid = await trigger([
+        "city",
+        "state",
+        "status",
+        "compensation",
+        "compType",
+      ]);
+    else valid = true;
     if (valid) setStep((s) => s + 1);
   };
 
@@ -82,14 +138,18 @@ export default function ApplicationFormPage() {
             style={{ position: "absolute", inset: 0 }}
           >
             <div>
-
-              <FormField
-                error={errors.jobdescription}>
+              <FormField error={errors.jobdescription}>
                 <Label htmlFor="jobdescription">Job Description</Label>
-                <Textarea id="jobdescription" className="overflow-y-auto h-50 resize-none" {...register("jobdescription")} />
+                <Textarea
+                  id="jobdescription"
+                  className="overflow-y-auto h-50 resize-none"
+                  {...register("jobdescription")}
+                />
               </FormField>
-              <Label htmlFor="resume" className="mt-4">Upload Your Resume</Label>
-              <Input id="resume" type="file"/>
+              <Label htmlFor="resume" className="mt-4">
+                Upload Your Resume
+              </Label>
+              <Input id="resume" type="file" />
             </div>
           </motion.div>
         )}
@@ -106,17 +166,13 @@ export default function ApplicationFormPage() {
           >
             <div>
               <Label htmlFor="city">City</Label>
-              <FormField
-                error={errors.city}
-              >
+              <FormField error={errors.city}>
                 <Input id="city" {...register("city")} />
               </FormField>
             </div>
             <div>
               <Label htmlFor="state">State</Label>
-              <FormField
-                error={errors.state}
-              >
+              <FormField error={errors.state}>
                 <Controller
                   name="state"
                   control={control}
@@ -139,9 +195,7 @@ export default function ApplicationFormPage() {
             </div>
             <div>
               <Label htmlFor="status">Status</Label>
-              <FormField
-                error={errors.status}
-              >
+              <FormField error={errors.status}>
                 <Controller
                   name="status"
                   control={control}
@@ -164,10 +218,12 @@ export default function ApplicationFormPage() {
             </div>
             <div>
               <Label htmlFor="compensation">Compensation</Label>
-              <FormField
-                error={errors.compensation}
-              >
-                <CompensationInputBox register={register} field="compensation" control={control}></CompensationInputBox>
+              <FormField error={errors.compensation}>
+                <CompensationInputBox
+                  register={register}
+                  field="compensation"
+                  control={control}
+                ></CompensationInputBox>
               </FormField>
             </div>
           </motion.div>

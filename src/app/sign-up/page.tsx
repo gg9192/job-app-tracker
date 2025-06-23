@@ -1,18 +1,18 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
 import { userSchema } from "@/lib/validators/user";
 import { PasswordInput } from "@/components/passwordinput";
+import { motion } from "framer-motion";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Link } from "@/components/link";
 import FormField from "@/components/formfield";
+import { SteppedForm } from "@/components/steppedForm";
 
 const clientUserSchema = userSchema
   .extend({
@@ -29,14 +29,16 @@ export default function SignUpPage() {
   const {
     register,
     handleSubmit,
+    trigger,
     formState: { errors },
   } = useForm<ClientUserSchema>({
     resolver: zodResolver(clientUserSchema),
   });
 
   const router = useRouter();
+  const [step, setStep] = useState(0);
 
-  const onSubmit = async (data: ClientUserSchema) => {
+  const onSubmit = handleSubmit(async (data: ClientUserSchema) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/signup`, {
       method: "POST",
       headers: {
@@ -57,15 +59,41 @@ export default function SignUpPage() {
     }
     toast.success("Your account was created.");
     router.push("/login");
+  });
+
+  const nextStep = async () => {
+    let valid = false;
+    if (step === 0) {valid = await trigger(["firstname", "lastname", "email"])}
+    if (step === stepsCount - 1) valid = false;
+    if (valid) setStep((s) => s + 1);
   };
 
+  const stepsCount = 2;
+
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 pt-5 pb-5">
-      <Card className="w-full max-w-md p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-2xl font-semibold">
-          Job Tracker Sign Up
-        </h1>
-        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+    <SteppedForm
+      steps={stepsCount}
+      currentStep={step}
+      onBack={() => setStep((s) => Math.max(s - 1, 0))}
+      onNext={nextStep}
+      onSubmit={onSubmit}
+      title="Sign Up"
+      footer={
+        <p className="text-center text-sm">
+          <Link href="/">Go back to dashboard</Link>
+        </p>
+      }
+    >
+      {step === 0 && (
+        <motion.div
+          key="step-0"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.2 }}
+          className="space-y-5 w-full"
+          style={{ position: "absolute", inset: 0 }}
+        >
           <div>
             <FormField
               error={errors.firstname}
@@ -98,7 +126,6 @@ export default function SignUpPage() {
                 placeholder="Last name"
                 {...register("lastname")}
               />
-
             </FormField>
           </div>
           <div>
@@ -115,7 +142,21 @@ export default function SignUpPage() {
               />
             </FormField>
           </div>
-          <FormField
+        </motion.div>
+      )}
+
+      {step === 1 && (
+        <motion.div
+          key="step-1"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.2 }}
+          className="space-y-5 w-full"
+          style={{ position: "absolute", inset: 0 }}
+        >
+          <div>
+            <FormField
             error={errors.password}
           >
             <PasswordInput
@@ -125,7 +166,9 @@ export default function SignUpPage() {
               {...register("password")}
             />
           </FormField>
-          <FormField
+          </div>
+          <div>
+            <FormField
             error={errors.confirmPassword}
           >
 
@@ -136,16 +179,13 @@ export default function SignUpPage() {
               {...register("confirmPassword")}
             />
           </FormField>
-
-
-          <Button type="submit" className="w-full">
-            Sign Up
-          </Button>
-        </form>
-        <p className="mt-6 text-center text-sm ">
-          Already have an account? <Link href="/login">Log In</Link>
-        </p>
-      </Card>
-    </div>
+          </div>
+          <div>
+            <Label>Upload Resume</Label>
+            <Input type="file"/>
+          </div>
+        </motion.div>
+      )}
+    </SteppedForm>
   );
 }

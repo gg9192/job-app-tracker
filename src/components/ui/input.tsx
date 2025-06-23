@@ -1,39 +1,35 @@
 import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { palette } from "@/lib/theme/colors";
+import { Button } from "./button";
 
-function Input({
-  className,
-  type,
-  ...props
-}: React.ComponentProps<"input">) {
+function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState("No file chosen");
 
   if (type === "file") {
     return (
-        <div className="flex mt-2">
-          <button
-            type="button"
-            className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out w-1/3 whitespace-nowrap"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            Choose File
-          </button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) setFileName(file.name);
-            }}
-            className="hidden"
-            {...props}
-          />
-          <div className="text-gray-400 py-2 px-3 rounded-md shadow-inner flex-grow ml-2 flex items-center overflow-hidden">
-            <span className="truncate text-md">{fileName}</span>
-          </div>
+      <div className="flex mt-2">
+        <Button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          Choose File
+        </Button>
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) setFileName(file.name);
+          }}
+          className="hidden"
+          {...props}
+        />
+        <div className="text-gray-400 py-2 px-3 rounded-md shadow-inner flex-grow ml-2 flex items-center overflow-hidden">
+          <span className="truncate text-md">{fileName}</span>
         </div>
+      </div>
     );
   }
 

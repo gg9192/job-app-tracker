@@ -25,7 +25,7 @@ export function SteppedForm({
   footer?: React.ReactNode;
 }) {
   const progressPercent = (currentStep / steps) * 100;
-  const isLastStep = currentStep === steps - 1
+  const isLastStep = currentStep === steps - 1;
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
@@ -34,7 +34,10 @@ export function SteppedForm({
 
         <Progress value={progressPercent} className="h-2 mb-6" />
 
-        <form className="space-y-5 relative overflow-hidden flex flex-col" style={{ minHeight: 400 }}>
+        <form
+          className="space-y-5 relative overflow-hidden flex flex-col"
+          style={{ minHeight: 400 }}
+        >
           <div className="relative flex-grow">
             <AnimatePresence mode="wait">{children}</AnimatePresence>
           </div>
@@ -48,10 +51,11 @@ export function SteppedForm({
               <Button onClick={onNext} type="button">
                 Next
               </Button>
-            ) : (<Button type="button" onClick={onSubmit}>
-              Submit
-            </Button>)}
-
+            ) : (
+              <Button type="button" onClick={onSubmit}>
+                Submit
+              </Button>
+            )}
           </div>
         </form>
       </Card>

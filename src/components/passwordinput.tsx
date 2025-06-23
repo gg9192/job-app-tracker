@@ -56,7 +56,6 @@ export function PasswordInput(
           )}
         </button>
       </div>
-     
     </>
   );
 }

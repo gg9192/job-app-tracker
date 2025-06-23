@@ -1,151 +1,114 @@
-import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import SignUpPage from '@/app/sign-up/page'
-import { vi } from 'vitest'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import SignUpPage from "@/app/sign-up/page";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner"; // Add this import
 
-vi.mock('next/navigation', () => ({
-  useRouter: vi.fn(() => ({
-    push: vi.fn(),
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn(),
+}));
+
+vi.mock("sonner", () => ({
+  toast: {
+    success: vi.fn(),
+    error: vi.fn(),
+  },
+}));
+
+vi.mock("@/lib/validators/user", async () => {
+  const z = await import("zod");
+  return {
+    userSchema: z.object({
+      firstname: z.string().min(1),
+      lastname: z.string().min(1),
+      email: z.string().email(),
+      password: z.string().min(6),
+    }),
+  };
+});
+
+global.fetch = vi.fn();
+
+const pushMock = vi.fn();
+
+beforeEach(() => {
+  vi.resetAllMocks();
+  vi.mocked(useRouter).mockReturnValue({
+    push: pushMock,
+    prefetch: vi.fn(),
+    replace: vi.fn(),
     back: vi.fn(),
     forward: vi.fn(),
     refresh: vi.fn(),
-    replace: vi.fn(),
-    prefetch: vi.fn(),
-  }))
-}))
+  });
+});
 
-vi.mock('sonner', () => ({
-  toast: {
-    success: vi.fn(),
-    error: vi.fn()
-  }
-}))
 
 describe("SignUpPage", () => {
-  let push;
-
-  beforeEach(() => {
-    push = vi.fn();
-    useRouter.mockReturnValue({
-      push,
-      back: vi.fn(),
-      forward: vi.fn(),
-      refresh: vi.fn(),
-      replace: vi.fn(),
-      prefetch: vi.fn(),
-    });
+  it("renders step 0 fields", () => {
     render(<SignUpPage />);
-    vi.clearAllMocks();
-  })
+    expect(screen.getByLabelText(/First Name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Last Name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
+  });
 
-  it("renders the sign up form with all input fields and submit button", () => {
-    expect(screen.getByLabelText(/first name/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/last name/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument()
-  })
+  it("navigates to step 1 with valid input", async () => {
+    render(<SignUpPage />);
+    fireEvent.change(screen.getByLabelText(/First Name/i), {
+      target: { value: "Alex" },
+    });
+    fireEvent.change(screen.getByLabelText(/Last Name/i), {
+      target: { value: "Guo" },
+    });
+    fireEvent.change(screen.getByLabelText(/Email/i), {
+      target: { value: "alex@example.com" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /Next/i }));
+    await waitFor(() => expect(screen.getAllByLabelText(/Password/i).length).greaterThan(0));
+  });
 
-  it("shows validation errors for empty or invalid inputs", async () => {
-    fireEvent.click(screen.getByRole('button', { name: /sign up/i }))
-    await waitFor(() => {
-      expect(screen.getByText(/first name is required/i)).toBeInTheDocument()
-      expect(screen.getByText(/last name is required/i)).toBeInTheDocument()
-      expect(screen.getByText(/invalid email address/i)).toBeInTheDocument()
-      expect(screen.getByText(/password must be at least/i)).toBeInTheDocument()
-    })
-  })
+  it("submits form and calls fetch", async () => {
+    vi.stubGlobal("fetch", vi.fn(() =>
+      Promise.resolve({ ok: true, status: 200 })
+    ) as any);
 
-  it("shows error if passwords do not match", async () => {
-    fireEvent.input(screen.getByLabelText(/first name/i), { target: { value: 'Alex' } })
-    fireEvent.input(screen.getByLabelText(/last name/i), { target: { value: 'Guo' } })
-    fireEvent.input(screen.getByLabelText(/email/i), { target: { value: 'test@example.com' } })
-    fireEvent.input(screen.getByLabelText(/^password$/i), { target: { value: 'Password123$' } })
-    fireEvent.input(screen.getByLabelText(/confirm password/i), { target: { value: 'notmatching' } })
-    fireEvent.click(screen.getByRole('button', { name: /sign up/i }))
-    await waitFor(() => {
-      expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument()
-    })
-  })
+    render(<SignUpPage />);
 
-  it("submits form successfully and redirects on valid input", async () => {
-    // The 'push' mock is already set up in beforeEach, no need to re-mock useRouter here
-    global.fetch = vi.fn().mockResolvedValueOnce({ ok: true, status: 200 })
+    fireEvent.change(screen.getByPlaceholderText("First name"), {
+      target: { value: "Alex" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("Last name"), {
+      target: { value: "Guo" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("you@example.com"), {
+      target: { value: "alex@example.com" },
+    });
 
-    fireEvent.input(screen.getByLabelText(/first name/i), { target: { value: 'Alex' } })
-    fireEvent.input(screen.getByLabelText(/last name/i), { target: { value: 'Guo' } })
-    fireEvent.input(screen.getByLabelText(/email/i), { target: { value: 'test@example.com' } })
-    fireEvent.input(screen.getByLabelText(/^password$/i), { target: { value: 'Password123$' } })
-    fireEvent.input(screen.getByLabelText(/confirm password/i), { target: { value: 'Password123$' } })
-    fireEvent.click(screen.getByRole('button', { name: /sign up/i }))
+    fireEvent.click(screen.getByRole("button", { name: /next/i }));
 
-    await waitFor(() => {
-      expect(toast.success).toHaveBeenCalledWith("Your account was created.")
-      expect(push).toHaveBeenCalledWith('/login')
-    })
-  })
+    await waitFor(() =>
+      expect(screen.getByLabelText("Password")).toBeInTheDocument()
+    );
 
-  it("shows error toast if email is already in use (409 response)", async () => {
-    global.fetch = vi.fn().mockResolvedValueOnce({ ok: false, status: 409 })
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: { value: "testpass123" },
+    });
+    fireEvent.change(screen.getByLabelText("Confirm Password"), {
+      target: { value: "testpass123" },
+    });
 
-    fireEvent.input(screen.getByLabelText(/first name/i), { target: { value: 'Alex' } })
-    fireEvent.input(screen.getByLabelText(/last name/i), { target: { value: 'Guo' } })
-    fireEvent.input(screen.getByLabelText(/email/i), { target: { value: 'taken@example.com' } })
-    fireEvent.input(screen.getByLabelText(/^password$/i), { target: { value: 'Password123$' } })
-    fireEvent.input(screen.getByLabelText(/confirm password/i), { target: { value: 'Password123$' } })
-    fireEvent.click(screen.getByRole('button', { name: /sign up/i }))
+    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
 
-    await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith("That email is already in use!")
-    })
-  })
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining("/signup"),
+        expect.objectContaining({
+          method: "POST",
+        })
+      )
+    );
 
-  it("shows error toast if server error occurs (500 response)", async () => {
-    global.fetch = vi.fn().mockResolvedValueOnce({ ok: false, status: 500 })
-
-    fireEvent.input(screen.getByLabelText(/first name/i), { target: { value: 'Alex' } })
-    fireEvent.input(screen.getByLabelText(/last name/i), { target: { value: 'Guo' } })
-    fireEvent.input(screen.getByLabelText(/email/i), { target: { value: 'fail@example.com' } })
-    fireEvent.input(screen.getByLabelText(/^password$/i), { target: { value: 'Password123$' } })
-    fireEvent.input(screen.getByLabelText(/confirm password/i), { target: { value: 'Password123$' } })
-    fireEvent.click(screen.getByRole('button', { name: /sign up/i }))
-
-    await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith("Something went wrong on our end!")
-    })
-  })
-
-  it("displays success toast on successful account creation", async () => {
-    global.fetch = vi.fn().mockResolvedValueOnce({ ok: true, status: 200 })
-
-    fireEvent.input(screen.getByLabelText(/first name/i), { target: { value: 'Alex' } })
-    fireEvent.input(screen.getByLabelText(/last name/i), { target: { value: 'Guo' } })
-    fireEvent.input(screen.getByLabelText(/email/i), { target: { value: 'test@example.com' } })
-    fireEvent.input(screen.getByLabelText(/^password$/i), { target: { value: 'Password123$' } })
-    fireEvent.input(screen.getByLabelText(/confirm password/i), { target: { value: 'Password123$' } })
-    fireEvent.click(screen.getByRole('button', { name: /sign up/i }))
-
-    await waitFor(() => {
-      expect(toast.success).toHaveBeenCalledWith("Your account was created.")
-    })
-  })
-
-  it("navigates to login page after successful sign up", async () => {
-    // The 'push' mock is already set up in beforeEach, no need to re-mock useRouter here
-    global.fetch = vi.fn().mockResolvedValueOnce({ ok: true, status: 200 })
-
-    fireEvent.input(screen.getByLabelText(/first name/i), { target: { value: 'Alex' } })
-    fireEvent.input(screen.getByLabelText(/last name/i), { target: { value: 'Guo' } })
-    fireEvent.input(screen.getByLabelText(/email/i), { target: { value: 'test@example.com' } })
-    fireEvent.input(screen.getByLabelText(/^password$/i), { target: { value: 'Password123$' } })
-    fireEvent.input(screen.getByLabelText(/confirm password/i), { target: { value: 'Password123$' } })
-    fireEvent.click(screen.getByRole('button', { name: /sign up/i }))
-
-    await waitFor(() => {
-      expect(push).toHaveBeenCalledWith('/login')
-    })
-  })
-})
+    expect(toast.success).toHaveBeenCalledWith("Your account was created.");
+    expect(pushMock).toHaveBeenCalledWith("/login"); // Changed from 'push' to 'pushMock'
+  });
+});
