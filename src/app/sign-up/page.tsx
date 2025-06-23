@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { userSchema } from "@/lib/validators/user";
 import { PasswordInput } from "@/components/passwordinput";
 import { motion } from "framer-motion";
@@ -63,7 +62,9 @@ export default function SignUpPage() {
 
   const nextStep = async () => {
     let valid = false;
-    if (step === 0) {valid = await trigger(["firstname", "lastname", "email"])}
+    if (step === 0) {
+      valid = await trigger(["firstname", "lastname", "email"]);
+    }
     if (step === stepsCount - 1) valid = false;
     if (valid) setStep((s) => s + 1);
   };
@@ -96,11 +97,13 @@ export default function SignUpPage() {
         >
           <div>
             <FormField
+              id="firstname"
               label="First Name"
               error={errors.firstname}
               required={true}
             >
               <Input
+                id="firstname"
                 placeholder="First name"
                 {...register("firstname")}
               />
@@ -108,11 +111,13 @@ export default function SignUpPage() {
           </div>
           <div>
             <FormField
+              id="lastname"
               label="Last Name"
               error={errors.lastname}
               required={true}
             >
               <Input
+                id="lastname"
                 placeholder="Last name"
                 {...register("lastname")}
               />
@@ -120,11 +125,13 @@ export default function SignUpPage() {
           </div>
           <div>
             <FormField
+              id="email"
               label="Email"
               error={errors.email}
               required={true}
             >
               <Input
+                id="email"
                 placeholder="you@example.com"
                 {...register("email")}
               />
@@ -144,35 +151,31 @@ export default function SignUpPage() {
           style={{ position: "absolute", inset: 0 }}
         >
           <div>
-            <FormField
-            label="Password"
-            error={errors.password}
-          >
-            <PasswordInput
-              placeholder="••••••••"
-              {...register("password")}
-            />
-          </FormField>
-          </div>
-          <div>
-            <FormField
-            label="Confirm Password"
-            error={errors.confirmPassword}
-          >
-
-            <PasswordInput
-              placeholder="••••••••"
-              {...register("confirmPassword")}
-            />
-          </FormField>
-          </div>
-          <div>
-            <FormField
-              label="Upload Resume"
-            >
-              <Input type="file"/>
+            <FormField label="Password" error={errors.password} id="password">
+              <PasswordInput
+                placeholder="••••••••"
+                id="password"
+                {...register("password")}
+              />
             </FormField>
-            
+          </div>
+          <div>
+            <FormField
+              label="Confirm Password"
+              error={errors.confirmPassword}
+              id="passwordconfirm"
+            >
+              <PasswordInput
+                id="passwordconfirm"
+                placeholder="••••••••"
+                {...register("confirmPassword")}
+              />
+            </FormField>
+          </div>
+          <div>
+            <FormField label="Upload Resume" id="resume">
+              <Input type="file" id="resume" />
+            </FormField>
           </div>
         </motion.div>
       )}

@@ -138,18 +138,22 @@ export default function ApplicationFormPage() {
             style={{ position: "absolute", inset: 0 }}
           >
             <div>
-              <FormField error={errors.jobdescription}>
-                <Label htmlFor="jobdescription">Job Description</Label>
+              <FormField
+                error={errors.jobdescription}
+                label="Job Description"
+                required={true}
+              >
                 <Textarea
                   id="jobdescription"
                   className="overflow-y-auto h-50 resize-none"
                   {...register("jobdescription")}
                 />
               </FormField>
-              <Label htmlFor="resume" className="mt-4">
-                Upload Your Resume
-              </Label>
-              <Input id="resume" type="file" />
+            </div>
+            <div>
+              <FormField label="Upload Your Resume">
+                <Input type="file" />
+              </FormField>
             </div>
           </motion.div>
         )}
@@ -165,14 +169,12 @@ export default function ApplicationFormPage() {
             style={{ position: "absolute", inset: 0 }}
           >
             <div>
-              <Label htmlFor="city">City</Label>
-              <FormField error={errors.city}>
-                <Input id="city" {...register("city")} />
+              <FormField error={errors.city} label="City">
+                <Input {...register("city")} />
               </FormField>
             </div>
             <div>
-              <Label htmlFor="state">State</Label>
-              <FormField error={errors.state}>
+              <FormField error={errors.state} label="State">
                 <Controller
                   name="state"
                   control={control}

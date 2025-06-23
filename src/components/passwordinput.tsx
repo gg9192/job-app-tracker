@@ -3,9 +3,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { palette } from "@/lib/theme/colors";
 
-export function PasswordInput(
-  props: React.ComponentProps<typeof Input>,
-) {
+export function PasswordInput(props: React.ComponentProps<typeof Input>) {
   const [show, setShow] = useState(false);
   return (
     <>

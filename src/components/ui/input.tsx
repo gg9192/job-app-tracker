@@ -10,10 +10,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   if (type === "file") {
     return (
       <div className="flex mt-2">
-        <Button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-        >
+        <Button type="button" onClick={() => fileInputRef.current?.click()}>
           Choose File
         </Button>
         <input

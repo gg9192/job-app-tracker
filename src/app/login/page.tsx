@@ -62,14 +62,25 @@ export default function LoginPage() {
         </h1>
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <FormField error={errors.email} label="Email" required={true}>
+            <FormField
+              error={errors.email}
+              label="Email"
+              required={true}
+              id="email"
+            >
               <Input
+                id="email"
                 placeholder="you@example.com"
                 {...register("email")}
               />
             </FormField>
           </div>
-          <FormField error={errors.password} label="Password" required={true}>
+          <FormField
+            error={errors.password}
+            label="Password"
+            required={true}
+            id="password"
+          >
             <PasswordInput
               id="password"
               placeholder="••••••••"
