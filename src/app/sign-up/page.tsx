@@ -96,16 +96,11 @@ export default function SignUpPage() {
         >
           <div>
             <FormField
+              label="First Name"
               error={errors.firstname}
+              required={true}
             >
-              <Label
-                htmlFor="firstname"
-                className="mb-1 block text-sm font-medium"
-              >
-                First Name
-              </Label>
               <Input
-                id="firstname"
                 placeholder="First name"
                 {...register("firstname")}
               />
@@ -113,16 +108,11 @@ export default function SignUpPage() {
           </div>
           <div>
             <FormField
+              label="Last Name"
               error={errors.lastname}
+              required={true}
             >
-              <Label
-                htmlFor="lastname"
-                className="mb-1 block text-sm font-medium"
-              >
-                Last Name
-              </Label>
               <Input
-                id="lastname"
                 placeholder="Last name"
                 {...register("lastname")}
               />
@@ -130,13 +120,11 @@ export default function SignUpPage() {
           </div>
           <div>
             <FormField
+              label="Email"
               error={errors.email}
+              required={true}
             >
-              <Label htmlFor="email" className="mb-1 block text-sm font-medium">
-                Email
-              </Label>
               <Input
-                id="email"
                 placeholder="you@example.com"
                 {...register("email")}
               />
@@ -157,11 +145,10 @@ export default function SignUpPage() {
         >
           <div>
             <FormField
+            label="Password"
             error={errors.password}
           >
             <PasswordInput
-              id="password"
-              label="Password"
               placeholder="••••••••"
               {...register("password")}
             />
@@ -169,20 +156,23 @@ export default function SignUpPage() {
           </div>
           <div>
             <FormField
+            label="Confirm Password"
             error={errors.confirmPassword}
           >
 
             <PasswordInput
-              id="confirmPassword"
-              label="Confirm Password"
               placeholder="••••••••"
               {...register("confirmPassword")}
             />
           </FormField>
           </div>
           <div>
-            <Label>Upload Resume</Label>
-            <Input type="file"/>
+            <FormField
+              label="Upload Resume"
+            >
+              <Input type="file"/>
+            </FormField>
+            
           </div>
         </motion.div>
       )}
