@@ -1,18 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { palette } from "@/lib/theme/colors";
 
 export function PasswordInput(
-  props: React.ComponentProps<typeof Input> & { label: string },
+  props: React.ComponentProps<typeof Input>,
 ) {
   const [show, setShow] = useState(false);
   return (
     <>
-      <Label htmlFor={props.id} className="mb-1 block text-sm font-medium">
-        {props.label}
-      </Label>
       <div className="relative">
         <Input {...props} type={show ? "text" : "password"} className="pr-10" />
         <button
