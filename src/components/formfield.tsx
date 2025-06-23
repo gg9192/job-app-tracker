@@ -1,5 +1,5 @@
 import { palette } from "@/lib/theme/colors";
-import { Label } from "@radix-ui/react-label";
+import { Label } from "./ui/label";
 import { ReactNode } from "react";
 import { FieldError } from "react-hook-form";
 

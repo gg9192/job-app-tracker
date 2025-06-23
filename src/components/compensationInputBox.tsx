@@ -1,4 +1,4 @@
-import { UseFormRegister, Control, Controller } from "react-hook-form";
+import { UseFormRegister, Control, Controller, UseFormTrigger } from "react-hook-form";
 import { Input } from "./ui/input";
 import {
   Select,
@@ -14,10 +14,12 @@ export default function CompensationInputBox({
   register,
   control,
   field,
+  trigger
 }: {
   register: UseFormRegister<any>;
   control: Control<any>;
   field: string;
+  trigger: UseFormTrigger<any>
 }) {
   return (
     <div className="flex w-full rounded-md border border-input overflow-hidden">
@@ -35,7 +37,10 @@ export default function CompensationInputBox({
         control={control}
         name="compType"
         render={({ field }) => (
-          <Select onValueChange={field.onChange} value={field.value}>
+          <Select onValueChange={(event) => {
+            field.onChange(event)
+            trigger("compensation")
+          }} value={field.value ?? ""}>
             <SelectTrigger className="border-0 rounded-none focus:ring-0 focus:ring-offset-0 w-[140px] cursor-pointer">
               <SelectValue placeholder="Pay type" />
             </SelectTrigger>

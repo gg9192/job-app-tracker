@@ -2,14 +2,14 @@ import { render, screen, fireEvent, within } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { SearchApplicationComponent } from "@/components/searchApplicationsComponent";
 
-describe.only("SearchApplicationComponent", () => {
+describe("SearchApplicationComponent", () => {
     it("renders input and search button", () => {
         render(<SearchApplicationComponent />);
         expect(screen.getByPlaceholderText(/search by company/i)).toBeInTheDocument();
         expect(screen.getByText("Add a Tag")).toBeInTheDocument();
     });
 
-    it.only("opens and closes popover when clicking 'Add a Tag' button", () => {
+    it("opens and closes popover when clicking 'Add a Tag' button", () => {
         render(<SearchApplicationComponent />);
         const addButton = screen.getByText("Add a Tag")
         fireEvent.click(addButton);

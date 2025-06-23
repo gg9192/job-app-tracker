@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -97,7 +96,7 @@ export default function ApplicationFormPage() {
 
   const nextStep = async () => {
     let valid = false;
-    if (step === 0) valid = await trigger(["jobdescription"]);
+    if (step === 0) valid = await trigger(["jobdescription","compensation", "compType"]);
     else if (step === 1)
       valid = await trigger([
         "city",
@@ -139,20 +138,26 @@ export default function ApplicationFormPage() {
           >
             <div>
               <FormField
+                id="jobdesc"
                 error={errors.jobdescription}
                 label="Job Description"
                 required={true}
               >
                 <Textarea
-                  id="jobdescription"
+                  id="jobdesc"
                   className="overflow-y-auto h-50 resize-none"
                   {...register("jobdescription")}
                 />
               </FormField>
             </div>
             <div>
-              <FormField label="Upload Your Resume">
-                <Input type="file" />
+              <FormField error={errors.compensation} id="compensation" label="Compensation">
+                <CompensationInputBox
+                  register={register}
+                  field="compensation"
+                  control={control}
+                  trigger={trigger}
+                ></CompensationInputBox>
               </FormField>
             </div>
           </motion.div>
@@ -169,18 +174,18 @@ export default function ApplicationFormPage() {
             style={{ position: "absolute", inset: 0 }}
           >
             <div>
-              <FormField error={errors.city} label="City">
-                <Input {...register("city")} />
+              <FormField error={errors.city} label="City" id="city" required={true}>
+                <Input {...register("city")} id="city"/>
               </FormField>
             </div>
             <div>
-              <FormField error={errors.state} label="State">
+              <FormField error={errors.state} label="State" id="state" required={true}>
                 <Controller
                   name="state"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full" id="state">
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                       <SelectContent>
@@ -196,14 +201,13 @@ export default function ApplicationFormPage() {
               </FormField>
             </div>
             <div>
-              <Label htmlFor="status">Status</Label>
-              <FormField error={errors.status}>
+              <FormField error={errors.status} id="status" label="Status" required={true}>
                 <Controller
                   name="status"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full" id="status">
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                       <SelectContent>
@@ -216,16 +220,6 @@ export default function ApplicationFormPage() {
                     </Select>
                   )}
                 />
-              </FormField>
-            </div>
-            <div>
-              <Label htmlFor="compensation">Compensation</Label>
-              <FormField error={errors.compensation}>
-                <CompensationInputBox
-                  register={register}
-                  field="compensation"
-                  control={control}
-                ></CompensationInputBox>
               </FormField>
             </div>
           </motion.div>
