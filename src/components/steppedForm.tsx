@@ -5,6 +5,20 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+export function SteppedFormMotionDiv({children, step}: {children: React.ReactNode; step: number}) {
+  return (<motion.div 
+          key={step}
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.2 }}
+          className="space-y-5 w-full"
+          style={{ position: "absolute", inset: 0 }}
+        >
+          {children}
+        </motion.div>)
+}
+
 export function SteppedForm({
   steps,
   currentStep,
@@ -25,7 +39,7 @@ export function SteppedForm({
   footer?: React.ReactNode;
 }) {
   const progressPercent = (currentStep / steps) * 100;
-  const isLastStep = currentStep === steps - 1
+  const isLastStep = currentStep === steps - 1;
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
@@ -34,7 +48,10 @@ export function SteppedForm({
 
         <Progress value={progressPercent} className="h-2 mb-6" />
 
-        <form className="space-y-5 relative overflow-hidden flex flex-col" style={{ minHeight: 400 }}>
+        <form
+          className="space-y-5 relative overflow-hidden flex flex-col"
+          style={{ minHeight: 400 }}
+        >
           <div className="relative flex-grow">
             <AnimatePresence mode="wait">{children}</AnimatePresence>
           </div>
@@ -48,10 +65,11 @@ export function SteppedForm({
               <Button onClick={onNext} type="button">
                 Next
               </Button>
-            ) : (<Button type="button" onClick={onSubmit}>
-              Submit
-            </Button>)}
-
+            ) : (
+              <Button type="button" onClick={onSubmit}>
+                Submit
+              </Button>
+            )}
           </div>
         </form>
       </Card>

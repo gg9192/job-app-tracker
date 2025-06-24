@@ -5,7 +5,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { PasswordInput } from "@/components/passwordinput";
 import { toast } from "sonner";
@@ -65,22 +64,25 @@ export default function LoginPage() {
           <div>
             <FormField
               error={errors.email}
+              label="Email"
+              required={true}
+              id="email"
             >
-              <Label htmlFor="email" className="mb-1 block text-sm font-medium">
-                Email
-              </Label>
               <Input
                 id="email"
                 placeholder="you@example.com"
                 {...register("email")}
-              /></FormField>
+              />
+            </FormField>
           </div>
           <FormField
-          error={errors.password}
+            error={errors.password}
+            label="Password"
+            required={true}
+            id="password"
           >
             <PasswordInput
               id="password"
-              label="Password"
               placeholder="••••••••"
               {...register("password")}
             />

@@ -91,7 +91,6 @@ export function SearchApplicationComponent() {
                       key={tag}
                       onSelect={(tag) => {
                         if (selectedTags.includes(tag)) {
-                          console.log("here");
                           setSelectedTags((oldState: any) => {
                             const newState = oldState.filter(
                               (el: any) => el !== tag,

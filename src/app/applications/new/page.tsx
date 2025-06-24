@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -15,11 +14,16 @@ import {
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
 import { Link } from "@/components/link";
-import { SteppedForm } from "@/components/steppedForm";
+import { SteppedForm, SteppedFormMotionDiv } from "@/components/steppedForm";
 import CompensationInputBox from "@/components/compensationInputBox";
 import FormField from "@/components/formfield";
 
-import { applicationSchema, FormData, statusEnum } from "@/lib/validators/application";
+
+import {
+  applicationSchema,
+  FormData,
+  statusEnum,
+} from "@/lib/validators/application";
 
 export default function ApplicationFormPage() {
   const [step, setStep] = useState(0);
@@ -35,11 +39,56 @@ export default function ApplicationFormPage() {
   });
 
   const stateAbbreviations = [
-    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
-    "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-    "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-    "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-    "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
   ];
 
   const onSubmit = handleSubmit((data) => {
@@ -48,9 +97,16 @@ export default function ApplicationFormPage() {
 
   const nextStep = async () => {
     let valid = false;
-    if (step === 0) valid = await trigger(["jobdescription"]);
-    else if (step === 1) valid = await trigger(["city", "state", "status", "compensation", "compType"]);
-    else valid = true
+    if (step === 0) valid = await trigger(["jobdescription","compensation", "compType"]);
+    else if (step === 1)
+      valid = await trigger([
+        "city",
+        "state",
+        "status",
+        "compensation",
+        "compType",
+      ]);
+    else valid = true;
     if (valid) setStep((s) => s + 1);
   };
 
@@ -72,57 +128,49 @@ export default function ApplicationFormPage() {
         }
       >
         {step === 0 && (
-          <motion.div
-            key="step-0"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.2 }}
-            className="space-y-5 w-full"
-            style={{ position: "absolute", inset: 0 }}
-          >
+          <SteppedFormMotionDiv step={0}>
             <div>
-
               <FormField
-                error={errors.jobdescription}>
-                <Label htmlFor="jobdescription">Job Description</Label>
-                <Textarea id="jobdescription" className="overflow-y-auto h-50 resize-none" {...register("jobdescription")} />
+                id="jobdesc"
+                error={errors.jobdescription}
+                label="Job Description"
+                required={true}
+              >
+                <Textarea
+                  id="jobdesc"
+                  className="overflow-y-auto h-50 resize-none"
+                  {...register("jobdescription")}
+                />
               </FormField>
-              <Label htmlFor="resume" className="mt-4">Upload Your Resume</Label>
-              <Input id="resume" type="file"/>
             </div>
-          </motion.div>
+            <div>
+              <FormField error={errors.compensation} id="compensation" label="Compensation">
+                <CompensationInputBox
+                  register={register}
+                  field="compensation"
+                  control={control}
+                  trigger={trigger}
+                ></CompensationInputBox>
+              </FormField>
+            </div>
+          </SteppedFormMotionDiv>
         )}
 
         {step === 1 && (
-          <motion.div
-            key="step-1"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.2 }}
-            className="space-y-5 w-full"
-            style={{ position: "absolute", inset: 0 }}
-          >
+          <SteppedFormMotionDiv step={1}>
             <div>
-              <Label htmlFor="city">City</Label>
-              <FormField
-                error={errors.city}
-              >
-                <Input id="city" {...register("city")} />
+              <FormField error={errors.city} label="City" id="city" required={true}>
+                <Input {...register("city")} id="city"/>
               </FormField>
             </div>
             <div>
-              <Label htmlFor="state">State</Label>
-              <FormField
-                error={errors.state}
-              >
+              <FormField error={errors.state} label="State" id="state" required={true}>
                 <Controller
                   name="state"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full" id="state">
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                       <SelectContent>
@@ -138,16 +186,13 @@ export default function ApplicationFormPage() {
               </FormField>
             </div>
             <div>
-              <Label htmlFor="status">Status</Label>
-              <FormField
-                error={errors.status}
-              >
+              <FormField error={errors.status} id="status" label="Status" required={true}>
                 <Controller
                   name="status"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full" id="status">
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                       <SelectContent>
@@ -162,15 +207,7 @@ export default function ApplicationFormPage() {
                 />
               </FormField>
             </div>
-            <div>
-              <Label htmlFor="compensation">Compensation</Label>
-              <FormField
-                error={errors.compensation}
-              >
-                <CompensationInputBox register={register} field="compensation" control={control}></CompensationInputBox>
-              </FormField>
-            </div>
-          </motion.div>
+          </SteppedFormMotionDiv>
         )}
       </SteppedForm>
     </>

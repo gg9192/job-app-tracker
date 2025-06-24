@@ -1,18 +1,17 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
 import { userSchema } from "@/lib/validators/user";
 import { PasswordInput } from "@/components/passwordinput";
+import { motion } from "framer-motion";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Link } from "@/components/link";
 import FormField from "@/components/formfield";
+import { SteppedForm, SteppedFormMotionDiv } from "@/components/steppedForm";
 
 const clientUserSchema = userSchema
   .extend({
@@ -29,14 +28,16 @@ export default function SignUpPage() {
   const {
     register,
     handleSubmit,
+    trigger,
     formState: { errors },
   } = useForm<ClientUserSchema>({
     resolver: zodResolver(clientUserSchema),
   });
 
   const router = useRouter();
+  const [step, setStep] = useState(0);
 
-  const onSubmit = async (data: ClientUserSchema) => {
+  const onSubmit = handleSubmit(async (data: ClientUserSchema) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/signup`, {
       method: "POST",
       headers: {
@@ -57,25 +58,42 @@ export default function SignUpPage() {
     }
     toast.success("Your account was created.");
     router.push("/login");
+  });
+
+  const nextStep = async () => {
+    let valid = false;
+    if (step === 0) {
+      valid = await trigger(["firstname", "lastname", "email"]);
+    }
+    if (step === stepsCount - 1) valid = false;
+    if (valid) setStep((s) => s + 1);
   };
 
+  const stepsCount = 2;
+
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 pt-5 pb-5">
-      <Card className="w-full max-w-md p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-2xl font-semibold">
-          Job Tracker Sign Up
-        </h1>
-        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+    <SteppedForm
+      steps={stepsCount}
+      currentStep={step}
+      onBack={() => setStep((s) => Math.max(s - 1, 0))}
+      onNext={nextStep}
+      onSubmit={onSubmit}
+      title="Sign Up"
+      footer={
+        <p className="text-center text-sm">
+          <Link href="/">Go back to dashboard</Link>
+        </p>
+      }
+    >
+      {step === 0 && (
+        <SteppedFormMotionDiv step={0}>
           <div>
             <FormField
+              id="firstname"
+              label="First Name"
               error={errors.firstname}
+              required={true}
             >
-              <Label
-                htmlFor="firstname"
-                className="mb-1 block text-sm font-medium"
-              >
-                First Name
-              </Label>
               <Input
                 id="firstname"
                 placeholder="First name"
@@ -85,29 +103,25 @@ export default function SignUpPage() {
           </div>
           <div>
             <FormField
+              id="lastname"
+              label="Last Name"
               error={errors.lastname}
+              required={true}
             >
-              <Label
-                htmlFor="lastname"
-                className="mb-1 block text-sm font-medium"
-              >
-                Last Name
-              </Label>
               <Input
                 id="lastname"
                 placeholder="Last name"
                 {...register("lastname")}
               />
-
             </FormField>
           </div>
           <div>
             <FormField
+              id="email"
+              label="Email"
               error={errors.email}
+              required={true}
             >
-              <Label htmlFor="email" className="mb-1 block text-sm font-medium">
-                Email
-              </Label>
               <Input
                 id="email"
                 placeholder="you@example.com"
@@ -115,37 +129,32 @@ export default function SignUpPage() {
               />
             </FormField>
           </div>
-          <FormField
-            error={errors.password}
-          >
-            <PasswordInput
-              id="password"
-              label="Password"
-              placeholder="••••••••"
-              {...register("password")}
-            />
-          </FormField>
-          <FormField
-            error={errors.confirmPassword}
-          >
+        </SteppedFormMotionDiv>
+      )}
 
-            <PasswordInput
-              id="confirmPassword"
-              label="Confirm Password"
-              placeholder="••••••••"
-              {...register("confirmPassword")}
-            />
-          </FormField>
-
-
-          <Button type="submit" className="w-full">
-            Sign Up
-          </Button>
-        </form>
-        <p className="mt-6 text-center text-sm ">
-          Already have an account? <Link href="/login">Log In</Link>
-        </p>
-      </Card>
-    </div>
+      {step === 1 && (
+        <SteppedFormMotionDiv step={1}>
+          <div>
+            <FormField label="Password" error={errors.password} id="password">
+              <PasswordInput placeholder="••••••••" id="password" {...register("password")} />
+            </FormField>
+          </div>
+          <div>
+            <FormField label="Confirm Password" error={errors.confirmPassword} id="passwordconfirm">
+              <PasswordInput
+                id="passwordconfirm"
+                placeholder="••••••••"
+                {...register("confirmPassword")}
+              />
+            </FormField>
+          </div>
+          <div>
+            <FormField label="Upload Resume" id="resume">
+              <Input type="file" id="resume" />
+            </FormField>
+          </div>
+        </SteppedFormMotionDiv>
+      )}
+    </SteppedForm>
   );
 }
