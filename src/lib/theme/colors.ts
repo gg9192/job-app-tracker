@@ -5,6 +5,7 @@ export const palette = {
   accentBg: "bg-lime-500",
   accentText: "text-lime-500",
   accentInputRing: "focus:ring-lime-500",
+  accentFocusWithin: "focus-within:ring focus-within:ring-lime-500", 
   accentSelectRing: "data-[state=open]:border-lime-500",
   accentForCommandPopover: "data-[selected=true]:bg-stone-800",
   accentForSelectDropDown: "focus:bg-stone-800",

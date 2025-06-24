@@ -22,9 +22,9 @@ export default function CompensationInputBox({
   trigger: UseFormTrigger<any>
 }) {
   return (
-    <div className="flex w-full rounded-md border border-input overflow-hidden">
+    <div className={`flex w-full rounded-md border overflow-hidden transition-[color,box-shadow] border-input ${palette.accentFocusWithin}`}>
       <div className="flex items-center px-3 text-muted-foreground">
-        <DollarSign className={`w-4 h-4 ${palette.accentStroke}`} />
+        <DollarSign className="w-4 h-4" />
       </div>
       <Input
         type="number"
@@ -41,7 +41,9 @@ export default function CompensationInputBox({
             field.onChange(event)
             trigger("compensation")
           }} value={field.value ?? ""}>
-            <SelectTrigger className="border-0 rounded-none focus:ring-0 focus:ring-offset-0 w-[140px] cursor-pointer">
+            <SelectTrigger 
+              className="border-0 rounded-none focus:ring-0 focus:ring-offset-0 w-[140px] cursor-pointer"
+            >
               <SelectValue placeholder="Pay type" />
             </SelectTrigger>
             <SelectContent>
