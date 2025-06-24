@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
 import { Link } from "@/components/link";
-import { SteppedForm } from "@/components/steppedForm";
+import { SteppedForm, SteppedFormMotionDiv } from "@/components/steppedForm";
 import CompensationInputBox from "@/components/compensationInputBox";
 import FormField from "@/components/formfield";
 
@@ -128,15 +128,7 @@ export default function ApplicationFormPage() {
         }
       >
         {step === 0 && (
-          <motion.div
-            key="step-0"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.2 }}
-            className="space-y-5 w-full"
-            style={{ position: "absolute", inset: 0 }}
-          >
+          <SteppedFormMotionDiv step={0}>
             <div>
               <FormField
                 id="jobdesc"
@@ -161,19 +153,11 @@ export default function ApplicationFormPage() {
                 ></CompensationInputBox>
               </FormField>
             </div>
-          </motion.div>
+          </SteppedFormMotionDiv>
         )}
 
         {step === 1 && (
-          <motion.div
-            key="step-1"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.2 }}
-            className="space-y-5 w-full"
-            style={{ position: "absolute", inset: 0 }}
-          >
+          <SteppedFormMotionDiv step={1}>
             <div>
               <FormField error={errors.city} label="City" id="city" required={true}>
                 <Input {...register("city")} id="city"/>
@@ -223,7 +207,7 @@ export default function ApplicationFormPage() {
                 />
               </FormField>
             </div>
-          </motion.div>
+          </SteppedFormMotionDiv>
         )}
       </SteppedForm>
     </>
