@@ -12,8 +12,8 @@ export function SteppedFormMotionDiv({children, step}: {children: React.ReactNod
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.2 }}
-          className="space-y-5 w-full"
-          style={{ position: "absolute", inset: 0 }}
+          className="space-y-5 w-full h-full
+"
         >
           {children}
         </motion.div>)
@@ -28,6 +28,7 @@ export function SteppedForm({
   title,
   children,
   footer,
+  minHeight = 400
 }: {
   steps: number;
   currentStep: number;
@@ -37,6 +38,7 @@ export function SteppedForm({
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  minHeight?: number
 }) {
   const progressPercent = (currentStep / steps) * 100;
   const isLastStep = currentStep === steps - 1;
@@ -50,9 +52,9 @@ export function SteppedForm({
 
         <form
           className="space-y-5 relative overflow-hidden flex flex-col"
-          style={{ minHeight: 400 }}
+          style={{ minHeight: minHeight }}
         >
-          <div className="relative flex-grow">
+          <div className="relative flex-grow mb-0">
             <AnimatePresence mode="wait">{children}</AnimatePresence>
           </div>
 

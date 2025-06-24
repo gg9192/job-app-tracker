@@ -15,6 +15,7 @@ export const palette = {
   lightBg: "bg-white",
   lightStroke: "stroke-white",
   accentStroke: "stroke-lime-500",
+  mutedAccentCheck: "data-[state=checked]:bg-lime-600",
   neutralText: "text-gray-800",
   lightText: "text-white",
   lightCaret: "caret-white",

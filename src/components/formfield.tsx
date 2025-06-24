@@ -25,7 +25,7 @@ export default function FormField({
       </Label>
       {children}
       <p
-        className={`text-sm ${error ? palette.dangerText : "text-transparent"}`}
+        className={`text-sm ${error ? palette.dangerText : "text-transparent"} pt-1`}
       >
         {error ? error.message : "\u00A0"}
       </p>

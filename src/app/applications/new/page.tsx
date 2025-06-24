@@ -12,7 +12,6 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { motion } from "framer-motion";
 import { Link } from "@/components/link";
 import { SteppedForm, SteppedFormMotionDiv } from "@/components/steppedForm";
 import CompensationInputBox from "@/components/compensationInputBox";
@@ -24,6 +23,7 @@ import {
   FormData,
   statusEnum,
 } from "@/lib/validators/application";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function ApplicationFormPage() {
   const [step, setStep] = useState(0);
@@ -126,6 +126,7 @@ export default function ApplicationFormPage() {
             <Link href="/">Go back to dashboard</Link>
           </p>
         }
+        minHeight={450}
       >
         {step === 0 && (
           <SteppedFormMotionDiv step={0}>
@@ -206,6 +207,13 @@ export default function ApplicationFormPage() {
                   )}
                 />
               </FormField>
+            </div>
+            <div>
+              <FormField label="Remote?" id="remote">
+                <Checkbox id="remote"/>
+              </FormField>
+              
+              
             </div>
           </SteppedFormMotionDiv>
         )}
