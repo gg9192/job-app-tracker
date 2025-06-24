@@ -24,7 +24,7 @@ export default function CompensationInputBox({
   return (
     <div className={`flex w-full rounded-md border overflow-hidden transition-[color,box-shadow] border-input ${palette.accentFocusWithin}`}>
       <div className="flex items-center px-3 text-muted-foreground">
-        <DollarSign className="w-4 h-4" />
+        <DollarSign className={`w-4 h-4 ${palette.accentStroke}`} />
       </div>
       <Input
         type="number"
