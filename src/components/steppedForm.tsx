@@ -52,7 +52,7 @@ export function SteppedForm({
   const isLastStep = currentStep === steps - 1;
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
+    <div className="flex min-h-screen items-center justify-center px-4 mt-5 mb-5">
       <Card className="w-full max-w-md p-8 shadow-lg">
         <h1 className="mb-6 text-center text-2xl font-semibold">{title}</h1>
 
