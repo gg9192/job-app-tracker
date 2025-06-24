@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -33,16 +33,18 @@ export default function ApplicationFormPage() {
     trigger,
     formState: { errors },
     control,
-    watch
+    watch,
+    clearErrors
   } = useForm<FormData>({
     resolver: zodResolver(applicationSchema),
     mode: "all",
+    defaultValues: {
+      remote: false
+    }
   });
 
   const remote = watch("remote");
-  useEffect(() => {
-    console.log("Remote changed:", remote);
-  }, [remote]);
+
 
   const stateAbbreviations = [
     "AL",
@@ -201,7 +203,11 @@ export default function ApplicationFormPage() {
                     <Checkbox
                       id="remote"
                       checked={field.value}
-                      onCheckedChange={field.onChange}
+                      onCheckedChange={(e) => {
+                        clearErrors("state")
+                        clearErrors("city")
+                        field.onChange(e)
+                      }}
                     />
                   )}
                 />
