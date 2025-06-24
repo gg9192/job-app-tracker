@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -33,10 +33,16 @@ export default function ApplicationFormPage() {
     trigger,
     formState: { errors },
     control,
+    watch
   } = useForm<FormData>({
     resolver: zodResolver(applicationSchema),
     mode: "all",
   });
+
+  const remote = watch("remote");
+  useEffect(() => {
+    console.log("Remote changed:", remote);
+  }, [remote]);
 
   const stateAbbreviations = [
     "AL",
@@ -97,7 +103,7 @@ export default function ApplicationFormPage() {
 
   const nextStep = async () => {
     let valid = false;
-    if (step === 0) valid = await trigger(["jobdescription","compensation", "compType"]);
+    if (step === 0) valid = await trigger(["jobdescription", "compensation", "compType"]);
     else if (step === 1)
       valid = await trigger([
         "city",
@@ -160,18 +166,18 @@ export default function ApplicationFormPage() {
         {step === 1 && (
           <SteppedFormMotionDiv step={1}>
             <div>
-              <FormField error={errors.city} label="City" id="city" required={true}>
-                <Input {...register("city")} id="city"/>
+              <FormField error={errors.city} label="City" id="city" required={!remote}>
+                <Input {...register("city")} id="city" disabled={remote} />
               </FormField>
             </div>
             <div>
-              <FormField error={errors.state} label="State" id="state" required={true}>
+              <FormField error={errors.state} label="State" id="state" required={!remote}>
                 <Controller
                   name="state"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full" id="state">
+                      <SelectTrigger className="w-full" id="state" disabled={remote}>
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                       <SelectContent>
@@ -185,6 +191,22 @@ export default function ApplicationFormPage() {
                   )}
                 />
               </FormField>
+            </div>
+            <div>
+              <FormField label="Remote?" id="remote">
+                <Controller
+                  name="remote"
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox
+                      id="remote"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+              </FormField>
+
             </div>
             <div>
               <FormField error={errors.status} id="status" label="Status" required={true}>
@@ -207,13 +229,6 @@ export default function ApplicationFormPage() {
                   )}
                 />
               </FormField>
-            </div>
-            <div>
-              <FormField label="Remote?" id="remote">
-                <Checkbox id="remote"/>
-              </FormField>
-              
-              
             </div>
           </SteppedFormMotionDiv>
         )}

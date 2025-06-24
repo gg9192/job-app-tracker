@@ -15,7 +15,7 @@ export const applicationSchema = z
     jobdescription: z.string().optional(),
     city: z.string().optional(),
     state: z.string().optional(),
-    remote: z.boolean(),
+    remote: z.boolean().optional(),
     status: statusEnum.optional(),
     compensation: z.string().optional(),
     compType: compTypeEnum.optional(),
