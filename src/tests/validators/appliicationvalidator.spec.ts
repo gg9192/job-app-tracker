@@ -2,8 +2,10 @@ import { describe, it, expect } from "vitest";
 import { applicationSchema } from "@/lib/validators/application";
 
 describe("applicationSchema", () => {
-  it("fails with missing required fields", () => {
-    const result = applicationSchema.safeParse({});
+  it("fails with missing required fields for non-remote job", () => {
+    const result = applicationSchema.safeParse({
+      remote: false,
+    });
     expect(result.success).toBe(false);
     if (!result.success) {
       const issues = result.error.flatten().fieldErrors;
@@ -14,14 +16,25 @@ describe("applicationSchema", () => {
     }
   });
 
+  it("passes without city/state if remote is true", () => {
+    const result = applicationSchema.safeParse({
+      jobdescription: "Remote role",
+      remote: true,
+      status: "APPLIED",
+      compensation: "",
+    });
+    expect(result.success).toBe(true);
+  });
+
   it("fails if compensation is not a number", () => {
     const result = applicationSchema.safeParse({
       jobdescription: "desc",
       city: "city",
       state: "state",
+      remote: false,
       status: "APPLIED",
       compensation: "abc",
-      compType: "yearly"
+      compType: "yearly",
     });
     expect(result.success).toBe(false);
   });
@@ -31,8 +44,9 @@ describe("applicationSchema", () => {
       jobdescription: "desc",
       city: "city",
       state: "state",
+      remote: false,
       status: "OFFER",
-      compensation: "1000"
+      compensation: "1000",
     });
     expect(result.success).toBe(false);
   });
@@ -42,9 +56,10 @@ describe("applicationSchema", () => {
       jobdescription: "desc",
       city: "city",
       state: "state",
+      remote: false,
       status: "REJECTED",
       compensation: "1000.00",
-      compType: "hourly"
+      compType: "hourly",
     });
     expect(result.success).toBe(true);
   });
@@ -54,6 +69,7 @@ describe("applicationSchema", () => {
       jobdescription: "desc",
       city: "city",
       state: "state",
+      remote: false,
       status: "WITHDRAWN",
       compensation: "",
     });
