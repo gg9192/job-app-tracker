@@ -15,6 +15,7 @@ export const applicationSchema = z
     jobdescription: z.string().optional(),
     city: z.string().optional(),
     state: z.string().optional(),
+    remote: z.boolean().optional(),
     status: statusEnum.optional(),
     compensation: z.string().optional(),
     compType: compTypeEnum.optional(),
@@ -28,19 +29,21 @@ export const applicationSchema = z
         code: "custom",
       });
     }
-    if (!data.city || data.city.trim() === "") {
-      ctx.addIssue({
-        path: ["city"],
-        message: "City is required",
-        code: "custom",
-      });
-    }
-    if (!data.state || data.state.trim() === "") {
-      ctx.addIssue({
-        path: ["state"],
-        message: "State is required",
-        code: "custom",
-      });
+    if (data.remote === false) {
+      if (!data.city || data.city.trim() === "") {
+        ctx.addIssue({
+          path: ["city"],
+          message: "City is required",
+          code: "custom",
+        });
+      }
+      if (!data.state || data.state.trim() === "") {
+        ctx.addIssue({
+          path: ["state"],
+          message: "State is required",
+          code: "custom",
+        });
+      }
     }
     if (!data.status || data.status.trim() === "") {
       ctx.addIssue({

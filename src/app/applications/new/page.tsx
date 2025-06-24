@@ -12,18 +12,17 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { motion } from "framer-motion";
 import { Link } from "@/components/link";
 import { SteppedForm, SteppedFormMotionDiv } from "@/components/steppedForm";
 import CompensationInputBox from "@/components/compensationInputBox";
 import FormField from "@/components/formfield";
-
 
 import {
   applicationSchema,
   FormData,
   statusEnum,
 } from "@/lib/validators/application";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function ApplicationFormPage() {
   const [step, setStep] = useState(0);
@@ -33,10 +32,17 @@ export default function ApplicationFormPage() {
     trigger,
     formState: { errors },
     control,
+    watch,
+    clearErrors,
   } = useForm<FormData>({
     resolver: zodResolver(applicationSchema),
     mode: "all",
+    defaultValues: {
+      remote: false,
+    },
   });
+
+  const remote = watch("remote");
 
   const stateAbbreviations = [
     "AL",
@@ -97,7 +103,8 @@ export default function ApplicationFormPage() {
 
   const nextStep = async () => {
     let valid = false;
-    if (step === 0) valid = await trigger(["jobdescription","compensation", "compType"]);
+    if (step === 0)
+      valid = await trigger(["jobdescription", "compensation", "compType"]);
     else if (step === 1)
       valid = await trigger([
         "city",
@@ -126,6 +133,7 @@ export default function ApplicationFormPage() {
             <Link href="/">Go back to dashboard</Link>
           </p>
         }
+        minHeight={450}
       >
         {step === 0 && (
           <SteppedFormMotionDiv step={0}>
@@ -144,7 +152,11 @@ export default function ApplicationFormPage() {
               </FormField>
             </div>
             <div>
-              <FormField error={errors.compensation} id="compensation" label="Compensation">
+              <FormField
+                error={errors.compensation}
+                id="compensation"
+                label="Compensation"
+              >
                 <CompensationInputBox
                   register={register}
                   field="compensation"
@@ -159,18 +171,32 @@ export default function ApplicationFormPage() {
         {step === 1 && (
           <SteppedFormMotionDiv step={1}>
             <div>
-              <FormField error={errors.city} label="City" id="city" required={true}>
-                <Input {...register("city")} id="city"/>
+              <FormField
+                error={errors.city}
+                label="City"
+                id="city"
+                required={!remote}
+              >
+                <Input {...register("city")} id="city" disabled={remote} />
               </FormField>
             </div>
             <div>
-              <FormField error={errors.state} label="State" id="state" required={true}>
+              <FormField
+                error={errors.state}
+                label="State"
+                id="state"
+                required={!remote}
+              >
                 <Controller
                   name="state"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full" id="state">
+                      <SelectTrigger
+                        className="w-full"
+                        id="state"
+                        disabled={remote}
+                      >
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                       <SelectContent>
@@ -186,7 +212,31 @@ export default function ApplicationFormPage() {
               </FormField>
             </div>
             <div>
-              <FormField error={errors.status} id="status" label="Status" required={true}>
+              <FormField label="Remote?" id="remote">
+                <Controller
+                  name="remote"
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox
+                      id="remote"
+                      checked={field.value}
+                      onCheckedChange={(e) => {
+                        clearErrors("state");
+                        clearErrors("city");
+                        field.onChange(e);
+                      }}
+                    />
+                  )}
+                />
+              </FormField>
+            </div>
+            <div>
+              <FormField
+                error={errors.status}
+                id="status"
+                label="Status"
+                required={true}
+              >
                 <Controller
                   name="status"
                   control={control}

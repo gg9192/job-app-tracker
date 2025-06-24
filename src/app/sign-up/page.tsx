@@ -136,11 +136,19 @@ export default function SignUpPage() {
         <SteppedFormMotionDiv step={1}>
           <div>
             <FormField label="Password" error={errors.password} id="password">
-              <PasswordInput placeholder="••••••••" id="password" {...register("password")} />
+              <PasswordInput
+                placeholder="••••••••"
+                id="password"
+                {...register("password")}
+              />
             </FormField>
           </div>
           <div>
-            <FormField label="Confirm Password" error={errors.confirmPassword} id="passwordconfirm">
+            <FormField
+              label="Confirm Password"
+              error={errors.confirmPassword}
+              id="passwordconfirm"
+            >
               <PasswordInput
                 id="passwordconfirm"
                 placeholder="••••••••"
