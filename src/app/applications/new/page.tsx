@@ -17,7 +17,6 @@ import { SteppedForm, SteppedFormMotionDiv } from "@/components/steppedForm";
 import CompensationInputBox from "@/components/compensationInputBox";
 import FormField from "@/components/formfield";
 
-
 import {
   applicationSchema,
   FormData,
@@ -34,17 +33,16 @@ export default function ApplicationFormPage() {
     formState: { errors },
     control,
     watch,
-    clearErrors
+    clearErrors,
   } = useForm<FormData>({
     resolver: zodResolver(applicationSchema),
     mode: "all",
     defaultValues: {
-      remote: false
-    }
+      remote: false,
+    },
   });
 
   const remote = watch("remote");
-
 
   const stateAbbreviations = [
     "AL",
@@ -105,7 +103,8 @@ export default function ApplicationFormPage() {
 
   const nextStep = async () => {
     let valid = false;
-    if (step === 0) valid = await trigger(["jobdescription", "compensation", "compType"]);
+    if (step === 0)
+      valid = await trigger(["jobdescription", "compensation", "compType"]);
     else if (step === 1)
       valid = await trigger([
         "city",
@@ -153,7 +152,11 @@ export default function ApplicationFormPage() {
               </FormField>
             </div>
             <div>
-              <FormField error={errors.compensation} id="compensation" label="Compensation">
+              <FormField
+                error={errors.compensation}
+                id="compensation"
+                label="Compensation"
+              >
                 <CompensationInputBox
                   register={register}
                   field="compensation"
@@ -168,18 +171,32 @@ export default function ApplicationFormPage() {
         {step === 1 && (
           <SteppedFormMotionDiv step={1}>
             <div>
-              <FormField error={errors.city} label="City" id="city" required={!remote}>
+              <FormField
+                error={errors.city}
+                label="City"
+                id="city"
+                required={!remote}
+              >
                 <Input {...register("city")} id="city" disabled={remote} />
               </FormField>
             </div>
             <div>
-              <FormField error={errors.state} label="State" id="state" required={!remote}>
+              <FormField
+                error={errors.state}
+                label="State"
+                id="state"
+                required={!remote}
+              >
                 <Controller
                   name="state"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-full" id="state" disabled={remote}>
+                      <SelectTrigger
+                        className="w-full"
+                        id="state"
+                        disabled={remote}
+                      >
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                       <SelectContent>
@@ -204,18 +221,22 @@ export default function ApplicationFormPage() {
                       id="remote"
                       checked={field.value}
                       onCheckedChange={(e) => {
-                        clearErrors("state")
-                        clearErrors("city")
-                        field.onChange(e)
+                        clearErrors("state");
+                        clearErrors("city");
+                        field.onChange(e);
                       }}
                     />
                   )}
                 />
               </FormField>
-
             </div>
             <div>
-              <FormField error={errors.status} id="status" label="Status" required={true}>
+              <FormField
+                error={errors.status}
+                id="status"
+                label="Status"
+                required={true}
+              >
                 <Controller
                   name="status"
                   control={control}

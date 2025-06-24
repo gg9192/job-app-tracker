@@ -31,19 +31,19 @@ export const applicationSchema = z
     }
     if (data.remote === false) {
       if (!data.city || data.city.trim() === "") {
-      ctx.addIssue({
-        path: ["city"],
-        message: "City is required",
-        code: "custom",
-      });
-    }
-    if (!data.state || data.state.trim() === "") {
-      ctx.addIssue({
-        path: ["state"],
-        message: "State is required",
-        code: "custom",
-      });
-    }
+        ctx.addIssue({
+          path: ["city"],
+          message: "City is required",
+          code: "custom",
+        });
+      }
+      if (!data.state || data.state.trim() === "") {
+        ctx.addIssue({
+          path: ["state"],
+          message: "State is required",
+          code: "custom",
+        });
+      }
     }
     if (!data.status || data.status.trim() === "") {
       ctx.addIssue({
