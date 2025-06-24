@@ -5,6 +5,20 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+export function SteppedFormMotionDiv({children, step}: {children: React.ReactNode; step: number}) {
+  return (<motion.div 
+          key={step}
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -40 }}
+          transition={{ duration: 0.2 }}
+          className="space-y-5 w-full"
+          style={{ position: "absolute", inset: 0 }}
+        >
+          {children}
+        </motion.div>)
+}
+
 export function SteppedForm({
   steps,
   currentStep,

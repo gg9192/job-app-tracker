@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Link } from "@/components/link";
 import FormField from "@/components/formfield";
-import { SteppedForm } from "@/components/steppedForm";
+import { SteppedForm, SteppedFormMotionDiv } from "@/components/steppedForm";
 
 const clientUserSchema = userSchema
   .extend({
@@ -86,15 +86,7 @@ export default function SignUpPage() {
       }
     >
       {step === 0 && (
-        <motion.div
-          key="step-0"
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -40 }}
-          transition={{ duration: 0.2 }}
-          className="space-y-5 w-full"
-          style={{ position: "absolute", inset: 0 }}
-        >
+        <SteppedFormMotionDiv step={0}>
           <div>
             <FormField
               id="firstname"
@@ -137,34 +129,18 @@ export default function SignUpPage() {
               />
             </FormField>
           </div>
-        </motion.div>
+        </SteppedFormMotionDiv>
       )}
 
       {step === 1 && (
-        <motion.div
-          key="step-1"
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -40 }}
-          transition={{ duration: 0.2 }}
-          className="space-y-5 w-full"
-          style={{ position: "absolute", inset: 0 }}
-        >
+        <SteppedFormMotionDiv step={1}>
           <div>
             <FormField label="Password" error={errors.password} id="password">
-              <PasswordInput
-                placeholder="••••••••"
-                id="password"
-                {...register("password")}
-              />
+              <PasswordInput placeholder="••••••••" id="password" {...register("password")} />
             </FormField>
           </div>
           <div>
-            <FormField
-              label="Confirm Password"
-              error={errors.confirmPassword}
-              id="passwordconfirm"
-            >
+            <FormField label="Confirm Password" error={errors.confirmPassword} id="passwordconfirm">
               <PasswordInput
                 id="passwordconfirm"
                 placeholder="••••••••"
@@ -177,7 +153,7 @@ export default function SignUpPage() {
               <Input type="file" id="resume" />
             </FormField>
           </div>
-        </motion.div>
+        </SteppedFormMotionDiv>
       )}
     </SteppedForm>
   );
