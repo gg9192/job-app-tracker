@@ -77,7 +77,7 @@ export default function JobApplicationTable({
         </p>
       ) : (
         <>
-          <div className="overflow-x-auto rounded-lg border border-gray-600 mb-4">
+          <div className="overflow-x-auto rounded-lg border mb-4">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -131,7 +131,7 @@ export default function JobApplicationTable({
                           >
                             <SelectValue placeholder="Select Status" />
                           </SelectTrigger>
-                          <SelectContent className="border-gray-600">
+                          <SelectContent>
                             {allStatuses.map((s) => (
                               <SelectItem key={s} value={s}>
                                 {getStatusProps(s).name}
@@ -172,7 +172,6 @@ export default function JobApplicationTable({
                     <SelectItem
                       key={num}
                       value={String(num)}
-                      className="hover:bg-gray-700 focus:bg-gray-700"
                     >
                       {num}
                     </SelectItem>

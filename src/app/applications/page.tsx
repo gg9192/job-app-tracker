@@ -306,8 +306,10 @@ export default function App() {
   };
 
   return (
-    <Card className=" p-5">
-      <SearchApplicationComponent />
+    <Card className="flex items-center p-5">
+      <div className="w-[90vw]">
+        <SearchApplicationComponent/>
+      </div>
       <JobApplicationTable
         applications={filteredApplications}
         onUpdateStatus={handleUpdateStatus}
