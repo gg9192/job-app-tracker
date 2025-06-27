@@ -52,19 +52,25 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
     />
   );
 }
+type TableRowProps = Omit<React.ComponentProps<"tr">, "data-header"> & {
+  "data-header"?: boolean;
+};
 
-function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
+function TableRow({ className, "data-header": isHeader, ...props }: TableRowProps) {
   return (
     <tr
       data-slot="table-row"
       className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors hover:cursor-pointer",
+        "data-[state=selected]:bg-muted border-b transition-colors",
+        !isHeader && `${palette.linkHover} hover:cursor-pointer`,
         className,
       )}
       {...props}
     />
   );
 }
+
+
 
 function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   return (

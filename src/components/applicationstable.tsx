@@ -113,7 +113,7 @@ export default function JobApplicationTable({
                     <div className="overflow-x-auto rounded-lg border mb-4">
                         <Table>
                             <TableHeader>
-                                <TableRow>
+                                <TableRow data-header>
                                     <TableHead className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider rounded-tl-lg">
                                         Job Title
                                     </TableHead>
