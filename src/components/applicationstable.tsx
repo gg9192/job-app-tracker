@@ -81,7 +81,7 @@ export default function JobApplicationTable({
                         {
                             Array.from({ length: totalPages }, (_, i) => i).map(
                                 (el, idx) => (
-                                    <PaginationItem>
+                                    <PaginationItem key={idx}>
                                         <PaginationLink href="#" isActive={idx === currentPage}>
                                             {el}
                                         </PaginationLink>

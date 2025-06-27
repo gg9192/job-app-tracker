@@ -7,6 +7,7 @@ import {
 
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { palette } from "@/lib/theme/colors"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -58,7 +59,8 @@ function PaginationLink({
           variant: isActive ? "outline" : "ghost",
           size,
         }),
-        className
+        className,
+        isActive ? "" :`${palette.linkHover} transition`
       )}
       {...props}
     />

@@ -308,7 +308,7 @@ export default function App() {
   return (
     <div className="flex items-start justify-center min-h-screen px-4 py-10">
       <Card className="flex flex-col p-5 w-[90vw] max-h-[90vh] overflow-auto items-center">
-        <div className="w-[90%] mb-4">
+        <div className="p-[16px] mb-4 w-full">
           <SearchApplicationComponent />
         </div>
         <div className="w-full overflow-scroll">

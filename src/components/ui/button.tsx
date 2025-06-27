@@ -13,9 +13,8 @@ const buttonVariants = cva(
         primary: `${palette.primaryBg} ${palette.lightText} shadow-xs hover:bg-gray-600`,
         secondary: `${palette.secondaryBg} ${palette.lightText} shadow-xs hover:bg-gray-600`,
         destructive: `${palette.dangerBg} ${palette.lightText} shadow-xs hover:bg-red-600 focus-visible:ring-red-200 dark:focus-visible:ring-red-400 dark:bg-red-400`,
-        outline: `border ${palette.lightBg} shadow-xs hover:${palette.accentBg} hover:text-white dark:bg-gray-700 dark:border-gray-700 dark:hover:bg-gray-600`,
+        outline: `${palette.accentBg} shadow-xs hover:${palette.accentBg} hover:text-white dark:bg-gray-700 dark:border-gray-700 dark:hover:bg-gray-600`,
         ghost: `hover:${palette.accentBg} hover:text-white dark:hover:bg-lime-500/50`,
-        link: `text-lime-700 underline-offset-4 hover:underline`,
         accent: `${palette.accentBg} ${palette.neutralText} shadow-xs hover:bg-lime-400`,
       },
       size: {
